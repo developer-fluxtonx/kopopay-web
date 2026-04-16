@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-cyan-light: #D8F4F7;
+  --color-brand-cyan-hover: #DCFCFF;
+  --color-brand-cyan-main: #2ACED1;
+  --color-brand-cyan-dark: #008E96;
+  --color-brand-navy-light: #034E78;
+  --color-brand-navy-main: #002556;
+  --color-brand-navy-dark: #000C22;
+  --color-brand-navy-black: #011B3B;
+
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #000C22;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000C22;
+    --foreground: #D8F4F7;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  @apply antialiased;
+}
+
+/* Custom Gradients */
+.bg-gradient-primary-button {
+  background: linear-gradient(92.45deg, var(--color-brand-navy-dark), var(--color-brand-navy-light), var(--color-brand-navy-main), #023459, var(--color-brand-navy-black));
+}
+
+.bg-gradient-action-button {
+  background: linear-gradient(180deg, var(--color-brand-cyan-main), var(--color-brand-cyan-dark));
+  border: 1.5px solid #14A9AE;
+}
+
+.bg-gradient-main {
+  background: linear-gradient(180deg, #FFFFFF 0%, #D8F4F7 100%);
+}
+
+@theme {
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
