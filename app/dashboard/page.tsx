@@ -154,7 +154,7 @@ export default function DashboardPage() {
                 <YAxis tick={{ fill: "#6B7280", fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                 <Tooltip
                   contentStyle={{ background: "#011B3B", border: "1px solid rgba(42,206,209,0.3)", borderRadius: "12px", color: "#fff", fontSize: 13 }}
-                  formatter={(value: number) => [`$${value.toLocaleString()}`, "Revenue"]}
+                  formatter={(value: any) => [`$${value.toLocaleString()}`, "Revenue"]}
                 />
                 <Area type="monotone" dataKey="revenue" stroke="#2ACED1" strokeWidth={2.5} fill="url(#revGrad)" />
               </AreaChart>
@@ -181,6 +181,7 @@ export default function DashboardPage() {
                 <YAxis tick={{ fill: "#6B7280", fontSize: 12 }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ background: "#011B3B", border: "1px solid rgba(42,206,209,0.3)", borderRadius: "12px", color: "#fff", fontSize: 13 }}
+                  formatter={(value: any) => [value, "Transactions"]}
                 />
                 <Bar dataKey="count" fill="#2ACED1" radius={[6, 6, 0, 0]} barSize={30} />
               </BarChart>

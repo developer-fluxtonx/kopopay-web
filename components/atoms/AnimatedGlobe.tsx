@@ -114,7 +114,7 @@ const OrbitingPoint = ({ data }: { data: any }) => {
 export const AnimatedGlobe = () => {
   return (
     <div className="w-full h-full min-h-[400px] relative cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 18], fov: 65 }} alpha>
+      <Canvas camera={{ position: [0, 0, 18], fov: 65 }} gl={{ alpha: true }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
         
