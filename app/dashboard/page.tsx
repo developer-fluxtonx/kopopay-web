@@ -6,15 +6,10 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import {
   ArrowUpRight,
   ArrowDownRight,
-  Send,
-  Download,
-  CreditCard,
   TrendingUp,
   Users,
-  DollarSign,
-  Activity,
-  Clock,
 } from "lucide-react";
+import { getIcon } from "@/components/IconRegistry";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar,
 } from "recharts";
@@ -51,7 +46,7 @@ const recentTransactions = [
 // Animated counter for dashboard stats
 const DashCounter = ({ target, prefix = "", suffix = "" }: { target: number; prefix?: string; suffix?: string }) => {
   const count = useMotionValue(0);
-  const display = useTransform(count, (v) => prefix + Math.round(v).toLocaleString() + suffix);
+  const display = useTransform(count, (v) => prefix + (Math.round(v) || 0).toLocaleString() + suffix);
 
   useEffect(() => {
     const controls = animate(count, target, { duration: 2, ease: "easeOut" });
@@ -62,6 +57,14 @@ const DashCounter = ({ target, prefix = "", suffix = "" }: { target: number; pre
 };
 
 export default function DashboardPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="flex flex-col gap-8">
       {/* ─── Greeting ─── */}
@@ -76,9 +79,9 @@ export default function DashboardPage() {
       <ScrollReveal direction="right" delay={0.1}>
         <div className="flex flex-wrap gap-3">
           {[
-            { label: "Send Money", icon: Send, color: "#2ACED1" },
-            { label: "Receive", icon: Download, color: "#008E96" },
-            { label: "New Invoice", icon: CreditCard, color: "#034E78" },
+            { label: "Send Money", icon: "Send", color: "#2ACED1" },
+            { label: "Receive", icon: "Download", color: "#008E96" },
+            { label: "New Invoice", icon: "CreditCard", color: "#034E78" },
           ].map((action, i) => (
             <motion.button
               key={i}
@@ -86,7 +89,10 @@ export default function DashboardPage() {
               whileTap={{ scale: 0.97 }}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-[#011B3B] border border-[#2ACED1]/20 text-sm font-semibold text-[#000C22] dark:text-white hover:border-[#2ACED1] transition-all duration-200"
             >
-              <action.icon className="w-4 h-4" style={{ color: action.color }} />
+              {(() => {
+                const Icon = getIcon(action.icon as string);
+                return <Icon className="w-4 h-4" style={{ color: action.color }} />;
+              })()}
               {action.label}
             </motion.button>
           ))}
@@ -96,10 +102,10 @@ export default function DashboardPage() {
       {/* ─── Stat Cards ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {[
-          { label: "Total Revenue", value: 142580, prefix: "$", icon: DollarSign, change: "+12.5%", up: true, dir: "left" as const },
-          { label: "Transactions", value: 3847, prefix: "", icon: Activity, change: "+8.2%", up: true, dir: "bottom" as const },
-          { label: "Active Customers", value: 1293, prefix: "", icon: Users, change: "+3.1%", up: true, dir: "bottom" as const },
-          { label: "Avg. Processing", value: 1.2, prefix: "", suffix: "s", icon: Clock, change: "-0.3s", up: false, dir: "right" as const },
+          { label: "Total Revenue", value: 142580, prefix: "$", icon: "DollarSign", change: "+12.5%", up: true, dir: "left" as const },
+          { label: "Transactions", value: 3847, prefix: "", icon: "Activity", change: "+8.2%", up: true, dir: "bottom" as const },
+          { label: "Active Customers", value: 1293, prefix: "", icon: "Users", change: "+3.1%", up: true, dir: "bottom" as const },
+          { label: "Avg. Processing", value: 1.2, prefix: "", suffix: "s", icon: "Clock", change: "-0.3s", up: false, dir: "right" as const },
         ].map((stat, i) => (
           <ScrollReveal key={i} direction={stat.dir} delay={i * 0.1}>
             <motion.div
@@ -107,8 +113,11 @@ export default function DashboardPage() {
               className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 hover:border-[#2ACED1]/60 transition-all duration-300 cursor-pointer"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-[#2ACED1]/10 flex items-center justify-center">
-                  <stat.icon className="w-5 h-5 text-[#2ACED1]" />
+                  <div className="w-10 h-10 rounded-xl bg-[#2ACED1]/10 flex items-center justify-center">
+                    {(() => {
+                      const Icon = getIcon(stat.icon as string);
+                      return <Icon className="w-5 h-5 text-[#2ACED1]" />;
+                    })()}
                 </div>
                 <span className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${stat.up ? "bg-emerald-500/10 text-emerald-600" : "bg-cyan-500/10 text-cyan-600"}`}>
                   {stat.up ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
@@ -154,7 +163,7 @@ export default function DashboardPage() {
                 <YAxis tick={{ fill: "#6B7280", fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                 <Tooltip
                   contentStyle={{ background: "#011B3B", border: "1px solid rgba(42,206,209,0.3)", borderRadius: "12px", color: "#fff", fontSize: 13 }}
-                  formatter={(value: any) => [`$${value.toLocaleString()}`, "Revenue"]}
+                  formatter={(value: any) => [`$${(value || 0).toLocaleString()}`, "Revenue"]}
                 />
                 <Area type="monotone" dataKey="revenue" stroke="#2ACED1" strokeWidth={2.5} fill="url(#revGrad)" />
               </AreaChart>

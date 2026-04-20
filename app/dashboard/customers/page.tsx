@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { motion } from "framer-motion";
 import { Search, Plus, Mail, MoreHorizontal, ArrowUpRight } from "lucide-react";
+import api from "@/lib/api";
+import { useApi } from "@/lib/useApi";
 
 const customers = [
   { id: "cus_001", name: "Sarah Johnson", email: "sarah@acme.com", payments: 42, volume: 52340, status: "Active", joined: "Jan 2025" },
@@ -22,8 +24,19 @@ const statusColors: Record<string, string> = {
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
+  const [mounted, setMounted] = useState(false);
 
-  const filtered = customers.filter(
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { data: customersFetched } = useApi(() => api.getCustomers(), [], true);
+  
+  if (!mounted) return null;
+
+  const displayedCustomers = customersFetched ?? customers;
+
+  const filtered = displayedCustomers.filter(
     (c) => c.name.toLowerCase().includes(search.toLowerCase()) || c.email.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -91,7 +104,7 @@ export default function CustomersPage() {
                 </div>
                 <div className="p-3 rounded-xl bg-[#F2FCFC] dark:bg-[#000C22]/60">
                   <p className="text-xs text-[#000C22]/50 dark:text-[#D8F4F7]/50 mb-0.5">Volume</p>
-                  <p className="text-lg font-bold text-[#000C22] dark:text-white">${customer.volume.toLocaleString()}</p>
+                  <p className="text-lg font-bold text-[#000C22] dark:text-white">${((customer.volume ?? 0)).toLocaleString()}</p>
                 </div>
               </div>
 

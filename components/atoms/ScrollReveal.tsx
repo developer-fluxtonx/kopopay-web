@@ -21,18 +21,20 @@ const directionMap = {
   bottom: { x: 0,   y: 60 },
 };
 
-export const ScrollReveal: React.FC<ScrollRevealProps> = ({
+export const ScrollReveal: React.FC<ScrollRevealProps & { as?: any }> = ({
   children,
   direction = "bottom",
   delay = 0,
   duration = 0.6,
   className = "",
   once = true,
+  as = "div",
 }) => {
   const offset = directionMap[direction];
+  const Component = (motion as any)[as] || motion.div;
 
   return (
-    <motion.div
+    <Component
       initial={{ opacity: 0, x: offset.x, y: offset.y }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once, margin: "-50px" }}
@@ -40,10 +42,10 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
         duration,
         delay,
         ease: [0.25, 0.1, 0.25, 1], // cubic-bezier for smooth deceleration
-      }}
+      } as any}
       className={className}
     >
       {children}
-    </motion.div>
+    </Component>
   );
 };

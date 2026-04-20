@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { motion } from "framer-motion";
 import { Copy, Check, Eye, EyeOff, Plus, Webhook, Terminal, ToggleLeft, ToggleRight } from "lucide-react";
 
 export default function DeveloperPage() {
+  const [mounted, setMounted] = useState(false);
   const [showLive, setShowLive] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [isLiveMode, setIsLiveMode] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const liveKey = "pk_live_kopo_51Hg8rK...xR9dT";
   const testKey = "pk_test_kopo_51Hg8rK...mN3qW";

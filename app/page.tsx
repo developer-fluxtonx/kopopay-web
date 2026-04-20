@@ -9,7 +9,8 @@ import { AnimatedGlobe } from "@/components/atoms/AnimatedGlobe";
 import { ScrollProgressReveal } from "@/components/atoms/ScrollProgressReveal";
 import { Button } from "@/components/atoms/Button";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { ChevronRight, ShieldCheck, Zap, Globe, ArrowRight, Code, Terminal, Layers, LifeBuoy } from "lucide-react";
+import { ChevronRight, ShieldCheck, ArrowRight, Code, Terminal, Layers, LifeBuoy } from "lucide-react";
+import { getIcon } from "@/components/IconRegistry";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -245,7 +246,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              icon: Zap,
+              icon: "Zap",
               color: "#2ACED1",
               bgColor: "#2ACED1",
               title: "Blazing Fast Payments",
@@ -253,7 +254,7 @@ export default function LandingPage() {
               dir: "left" as const,
             },
             {
-              icon: ShieldCheck,
+              icon: "ShieldCheck",
               color: "#034E78",
               bgColor: "#034E78",
               title: "Enterprise Radar",
@@ -261,7 +262,7 @@ export default function LandingPage() {
               dir: "bottom" as const,
             },
             {
-              icon: Globe,
+              icon: "Globe",
               color: "#008E96",
               bgColor: "#008E96",
               title: "Global Connect",
@@ -278,7 +279,10 @@ export default function LandingPage() {
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 shadow-sm"
                   style={{ backgroundColor: `${feature.bgColor}15` }}
                 >
-                  <feature.icon className="w-6 h-6" style={{ color: feature.color }} />
+                  {(() => {
+                    const Icon = getIcon(feature.icon as string);
+                    return <Icon className="w-6 h-6" style={{ color: feature.color }} />;
+                  })()}
                 </div>
                 <h3 className="text-xl font-bold text-[#000C22] dark:text-white mb-3">{feature.title}</h3>
                 <p className="text-[#000C22]/70 dark:text-[#D8F4F7]/70 leading-relaxed font-medium">{feature.text}</p>

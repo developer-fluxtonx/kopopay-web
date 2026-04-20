@@ -3,7 +3,8 @@
 import React from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { motion } from "framer-motion";
-import { CreditCard, TrendingUp, Users, RefreshCw, Plus, ArrowUpRight, Check, Zap } from "lucide-react";
+import { CreditCard, RefreshCw, Plus, ArrowUpRight, Check, Zap } from "lucide-react";
+import { getIcon } from "@/components/IconRegistry";
 
 const plans = [
   { name: "Starter", price: 29, interval: "mo", features: ["Up to 100 customers", "Basic analytics", "Email support"], color: "#2ACED1", popular: false },
@@ -19,6 +20,14 @@ const activeSubscriptions = [
 ];
 
 export default function BillingPage() {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="flex flex-col gap-8">
       <ScrollReveal direction="left">
@@ -29,16 +38,21 @@ export default function BillingPage() {
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {[
-          { label: "MRR", value: "$12,480", icon: TrendingUp, change: "+8.3%", dir: "left" as const },
-          { label: "Active Subs", value: "156", icon: Users, change: "+12", dir: "bottom" as const },
-          { label: "Churn Rate", value: "2.1%", icon: RefreshCw, change: "-0.4%", dir: "bottom" as const },
-          { label: "Avg. Revenue", value: "$80", icon: CreditCard, change: "+$5", dir: "right" as const },
+          { label: "MRR", value: "$12,480", icon: "TrendingUp", change: "+8.3%", dir: "left" as const },
+          { label: "Active Subs", value: "156", icon: "Users", change: "+12", dir: "bottom" as const },
+          { label: "Churn Rate", value: "2.1%", icon: "RefreshCw", change: "-0.4%", dir: "bottom" as const },
+          { label: "Avg. Revenue", value: "$80", icon: "CreditCard", change: "+$5", dir: "right" as const },
         ].map((m, i) => (
           <ScrollReveal key={i} direction={m.dir} delay={i * 0.08}>
             <motion.div whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(42,206,209,0.15)" }}
               className="p-5 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 hover:border-[#2ACED1]/60 transition-all duration-300">
               <div className="flex items-center justify-between mb-3">
-                <div className="w-9 h-9 rounded-lg bg-[#2ACED1]/10 flex items-center justify-center"><m.icon className="w-4 h-4 text-[#2ACED1]" /></div>
+                <div className="w-9 h-9 rounded-lg bg-[#2ACED1]/10 flex items-center justify-center">
+                  {(() => {
+                    const Icon = getIcon(m.icon as string);
+                    return <Icon className="w-4 h-4 text-[#2ACED1]" />;
+                  })()}
+                </div>
                 <span className="text-xs font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-0.5"><ArrowUpRight className="w-3 h-3" />{m.change}</span>
               </div>
               <p className="text-2xl font-bold text-[#000C22] dark:text-white">{m.value}</p>
