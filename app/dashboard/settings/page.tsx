@@ -5,12 +5,31 @@ import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { getIcon } from "@/components/IconRegistry";
 import { Button } from "@/components/atoms/Button";
 import { Card } from "@/components/atoms/Card";
+import api from "@/lib/api";
+import { useApi } from "@/lib/useApi";
 import {
   settingsGroups,
   settingsOverviewStats,
 } from "./settings.config";
 
 export default function SettingsPage() {
+  const { data: settingsStats } = useApi(() => api.getSettingsStats(), [], true);
+
+  const displayValue = (statLabel: string, fallback: string) => {
+    if (!settingsStats) return fallback;
+    switch (statLabel) {
+      case "Groups":
+        return settingsStats.groups ?? fallback;
+      case "Pages":
+        return settingsStats.pages ?? fallback;
+      case "API-ready":
+        return settingsStats.apiReady ?? fallback;
+      case "Legacy redirects":
+        return settingsStats.legacyRedirects ?? fallback;
+      default:
+        return fallback;
+    }
+  };
   return (
     <div className="space-y-8">
       <Card className="overflow-hidden border border-[#2ACED1]/15 bg-white/85 dark:bg-[#011B3B]/80">
@@ -63,7 +82,7 @@ export default function SettingsPage() {
                   </span>
                 </div>
                 <p className="mt-4 text-2xl font-bold text-[#000C22] dark:text-white">
-                  {stat.value}
+                  {displayValue(stat.label, stat.value)}
                 </p>
                 <p className="mt-1 text-xs font-semibold text-[#000C22]/50 dark:text-[#D8F4F7]/50">
                   {stat.label}

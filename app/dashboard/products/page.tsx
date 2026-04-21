@@ -15,13 +15,7 @@ import { getIcon } from "@/components/IconRegistry";
 import api from "@/lib/api";
 import { useApi } from "@/lib/useApi";
 
-const products = [
-  { id: "PROD_001", name: "Premium Subscription", type: "Recurring", price: "$49.00/mo", status: "Active", stock: "Unlimited", sales: "1,240" },
-  { id: "PROD_002", name: "Enterprise License", type: "Recurring", price: "$499.00/yr", status: "Active", stock: "Unlimited", sales: "85" },
-  { id: "PROD_003", name: "Basic Plan", type: "Recurring", price: "$19.00/mo", status: "Active", stock: "Unlimited", sales: "3,842" },
-  { id: "PROD_004", name: "Priority Support Add-on", type: "Recurring", price: "$9.00/mo", status: "Archived", stock: "Unlimited", sales: "560" },
-  { id: "PROD_005", name: "Physical NFC Card", type: "One-time", price: "$25.00", status: "Active", stock: "450", sales: "1,200" },
-];
+// Centralized product mock data provided by `lib/api.ts` via `api.getProducts()`
 
 export default function ProductsPage() {
   const [mounted, setMounted] = useState(false);
@@ -34,7 +28,7 @@ export default function ProductsPage() {
   
   if (!mounted) return null;
 
-  const displayedProducts = productsFetched ?? products;
+  const displayedProducts = productsFetched ?? [];
   return (
     <div className="flex flex-col gap-8">
       {/* ─── Header ─── */}

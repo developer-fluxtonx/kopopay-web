@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { motion } from "framer-motion";
 import { Copy, Check, Eye, EyeOff, Plus, Webhook, Terminal, ToggleLeft, ToggleRight } from "lucide-react";
+import api from "@/lib/api";
+import { useApi } from "@/lib/useApi";
 
 export default function DeveloperPage() {
   const [mounted, setMounted] = useState(false);
@@ -29,7 +31,8 @@ export default function DeveloperPage() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const webhooks = [
+  const { data: webhooksFetched, loading: webhooksLoading, reload: reloadWebhooks } = useApi(() => api.getWebhooks(), [], true);
+  const webhooks = webhooksFetched ?? [
     { url: "https://api.myapp.com/webhooks/kopo", events: "payment.succeeded, invoice.paid", status: "Active" },
     { url: "https://staging.myapp.com/hooks", events: "All events", status: "Testing" },
   ];

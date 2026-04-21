@@ -18,7 +18,8 @@ export default function SignupPage() {
     setTimeout(() => {
       // Allow any signup for test, route to login
       alert("Account created! Please log in with test@kopopay.com / password123");
-      router.push("/auth/login");
+      // defer via safePush to avoid router initialization races
+      import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/auth/login"));
     }, 1000);
   };
 

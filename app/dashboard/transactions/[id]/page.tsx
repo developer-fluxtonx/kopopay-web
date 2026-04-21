@@ -59,7 +59,7 @@ export default function TransactionDetailPage() {
       {/* ─── Top Navigation ─── */}
       <div className="flex items-center justify-between">
          <button 
-           onClick={() => router.back()}
+           onClick={() => import("@/lib/safeRouter").then(({ safeBack }) => safeBack(router))}
            className="flex items-center gap-2 text-sm font-bold text-[#000C22]/60 dark:text-[#D8F4F7]/60 hover:text-[#2ACED1] transition-colors"
          >
             <ArrowLeft className="w-4 h-4" /> Back to transactions

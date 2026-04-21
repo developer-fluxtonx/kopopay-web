@@ -7,11 +7,7 @@ import { Search, Filter, Download, ChevronDown, ArrowUpRight, ArrowDownRight } f
 import api from "@/lib/api";
 import { useApi } from "@/lib/useApi";
 
-// fallback for UI shape if API is not available
-const mockTransactions = [
-  { id: "TXN-20260415001", customer: { name: "Sarah Johnson", email: "sarah@acme.com" }, method: "Visa •••• 4242", amount: 1250.0, status: "Succeeded", date: "Apr 15, 2026" },
-  { id: "TXN-20260415002", customer: { name: "Michael Chen", email: "michael@startup.io" }, method: "Mastercard •••• 8811", amount: -320.0, status: "Processed", date: "Apr 15, 2026" },
-];
+// Using centralized mock data from `lib/api.ts` via `api.getTransactions()`
 
 const statusColors: Record<string, string> = {
   Succeeded: "bg-emerald-500/10 text-emerald-600",
@@ -32,11 +28,10 @@ export default function TransactionsPage() {
 
   if (!mounted) return null;
 
-  const filtered = (transactions ?? mockTransactions).filter(
-    (tx: any) =>
-      tx.customer?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      tx.customer?.email?.toLowerCase().includes(search.toLowerCase()) ||
-      tx.id.toLowerCase().includes(search.toLowerCase())
+  const filtered = (transactions ?? []).filter((tx: any) =>
+    tx.customer?.name?.toLowerCase().includes(search.toLowerCase()) ||
+    tx.customer?.email?.toLowerCase().includes(search.toLowerCase()) ||
+    tx.id.toLowerCase().includes(search.toLowerCase())
   );
 
   return (

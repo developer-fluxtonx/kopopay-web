@@ -29,12 +29,7 @@ const DashCounter = ({ target, prefix = "", suffix = "" }: { target: number; pre
   return <motion.span>{display}</motion.span>;
 };
 
-const payouts = [
-  { id: "PAY_101", bank: "Chase Bank •••• 4242", amount: "$12,450.00", status: "In Transit", date: "Scheduled: Apr 22" },
-  { id: "PAY_102", bank: "Morgan Stanley •••• 9812", amount: "$8,200.00", status: "Paid", date: "Sent: Apr 19" },
-  { id: "PAY_103", bank: "Chase Bank •••• 4242", amount: "$15,800.00", status: "Paid", date: "Sent: Apr 15" },
-  { id: "PAY_104", bank: "Chase Bank •••• 4242", amount: "$9,320.00", status: "Paid", date: "Sent: Apr 10" },
-];
+// Use centralized mock data from `lib/api.ts` instead of local fallback arrays
 
 export default function BalancesPage() {
   const [mounted, setMounted] = useState(false);
@@ -48,7 +43,7 @@ export default function BalancesPage() {
   
   if (!mounted) return null;
   
-  const displayedPayouts = payoutsFetched ?? payouts;
+  const displayedPayouts = payoutsFetched ?? [];
 
   return (
     <div className="flex flex-col gap-8">

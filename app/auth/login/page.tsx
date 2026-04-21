@@ -30,7 +30,8 @@ export default function LoginPage() {
           role: "merchant",
           verified: false // False to trigger 2FA / KYC
         });
-        router.push("/auth/2fa");
+        // defer navigation to avoid dispatching before router init
+        setTimeout(() => import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/auth/2fa")), 0);
       } else {
         setError("Invalid email or password. Use test@kopopay.com / password123");
       }

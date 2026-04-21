@@ -7,14 +7,7 @@ import { Search, Plus, Mail, MoreHorizontal, ArrowUpRight } from "lucide-react";
 import api from "@/lib/api";
 import { useApi } from "@/lib/useApi";
 
-const customers = [
-  { id: "cus_001", name: "Sarah Johnson", email: "sarah@acme.com", payments: 42, volume: 52340, status: "Active", joined: "Jan 2025" },
-  { id: "cus_002", name: "Michael Chen", email: "michael@startup.io", payments: 18, volume: 12800, status: "Active", joined: "Mar 2025" },
-  { id: "cus_003", name: "Priya Sharma", email: "priya@enterprise.co", payments: 67, volume: 148200, status: "Active", joined: "Nov 2024" },
-  { id: "cus_004", name: "James Wilson", email: "james@corp.com", payments: 5, volume: 3200, status: "At Risk", joined: "Feb 2026" },
-  { id: "cus_005", name: "Elena Rodriguez", email: "elena@shop.mx", payments: 31, volume: 28700, status: "Active", joined: "Jul 2025" },
-  { id: "cus_006", name: "Ahmed Hassan", email: "ahmed@fintech.ae", payments: 89, volume: 234500, status: "VIP", joined: "Sep 2024" },
-];
+// Use centralized customer mock data from `lib/api.ts` (via `api.getCustomers()`)
 
 const statusColors: Record<string, string> = {
   Active: "bg-emerald-500/10 text-emerald-600",
@@ -34,10 +27,12 @@ export default function CustomersPage() {
   
   if (!mounted) return null;
 
-  const displayedCustomers = customersFetched ?? customers;
+  const displayedCustomers = customersFetched ?? [];
 
   const filtered = displayedCustomers.filter(
-    (c) => c.name.toLowerCase().includes(search.toLowerCase()) || c.email.toLowerCase().includes(search.toLowerCase())
+    (c) =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      (c.email ?? "").toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -109,7 +104,7 @@ export default function CustomersPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${statusColors[customer.status]}`}>{customer.status}</span>
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${statusColors[customer.status as string] ?? ""}`}>{customer.status}</span>
                 <span className="text-xs text-[#000C22]/40 dark:text-[#D8F4F7]/40">Since {customer.joined}</span>
               </div>
             </motion.div>

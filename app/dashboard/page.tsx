@@ -7,41 +7,13 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   TrendingUp,
-  Users,
 } from "lucide-react";
 import { getIcon } from "@/components/IconRegistry";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar,
 } from "recharts";
-
-// Dummy chart data
-const revenueData = [
-  { name: "Jan", revenue: 12400 },
-  { name: "Feb", revenue: 18200 },
-  { name: "Mar", revenue: 15800 },
-  { name: "Apr", revenue: 23100 },
-  { name: "May", revenue: 27600 },
-  { name: "Jun", revenue: 32000 },
-  { name: "Jul", revenue: 29500 },
-];
-
-const transactionData = [
-  { name: "Mon", count: 120 },
-  { name: "Tue", count: 190 },
-  { name: "Wed", count: 150 },
-  { name: "Thu", count: 210 },
-  { name: "Fri", count: 260 },
-  { name: "Sat", count: 180 },
-  { name: "Sun", count: 95 },
-];
-
-const recentTransactions = [
-  { id: "TXN001", name: "Sarah Johnson", type: "Payment", amount: "+$1,250.00", status: "Succeeded", time: "2 min ago" },
-  { id: "TXN002", name: "Michael Chen", type: "Refund", amount: "-$320.00", status: "Processed", time: "15 min ago" },
-  { id: "TXN003", name: "Priya Sharma", type: "Payment", amount: "+$4,800.00", status: "Succeeded", time: "1 hr ago" },
-  { id: "TXN004", name: "James Wilson", type: "Payout", amount: "-$12,000.00", status: "Pending", time: "2 hr ago" },
-  { id: "TXN005", name: "Elena Rodriguez", type: "Payment", amount: "+$890.00", status: "Succeeded", time: "3 hr ago" },
-];
+import api from "@/lib/api";
+import { useApi } from "@/lib/useApi";
 
 // Animated counter for dashboard stats
 const DashCounter = ({ target, prefix = "", suffix = "" }: { target: number; prefix?: string; suffix?: string }) => {
@@ -63,13 +35,15 @@ export default function DashboardPage() {
     setMounted(true);
   }, []);
 
+  const { data: stats, loading } = useApi(() => api.getDashboardStats(), [], true);
+
   if (!mounted) return null;
 
   return (
     <div className="flex flex-col gap-8">
       {/* ─── Greeting ─── */}
       <ScrollReveal direction="left">
-        <div>
+        <div className={loading ? "animate-pulse" : ""}>
           <h1 className="text-2xl md:text-3xl font-bold text-[#000C22] dark:text-white mb-1">Good morning, John</h1>
           <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium">Here&apos;s what&apos;s happening with your payments today.</p>
         </div>
@@ -102,15 +76,15 @@ export default function DashboardPage() {
       {/* ─── Stat Cards ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {[
-          { label: "Total Revenue", value: 142580, prefix: "$", icon: "DollarSign", change: "+12.5%", up: true, dir: "left" as const },
-          { label: "Transactions", value: 3847, prefix: "", icon: "Activity", change: "+8.2%", up: true, dir: "bottom" as const },
-          { label: "Active Customers", value: 1293, prefix: "", icon: "Users", change: "+3.1%", up: true, dir: "bottom" as const },
-          { label: "Avg. Processing", value: 1.2, prefix: "", suffix: "s", icon: "Clock", change: "-0.3s", up: false, dir: "right" as const },
+          { label: "Total Revenue", value: stats?.revenue ?? 0, prefix: "$", icon: "DollarSign", change: stats?.revenueChange ?? "+0%", up: true, dir: "left" as const },
+          { label: "Transactions", value: stats?.transactions ?? 0, prefix: "", icon: "Activity", change: stats?.transactionsChange ?? "+0%", up: true, dir: "bottom" as const },
+          { label: "Active Customers", value: stats?.customers ?? 0, prefix: "", icon: "Users", change: stats?.customersChange ?? "+0%", up: true, dir: "bottom" as const },
+          { label: "Avg. Processing", value: stats?.processingTime ?? 0, prefix: "", suffix: "s", icon: "Clock", change: stats?.processingTimeChange ?? "-0s", up: false, dir: "right" as const },
         ].map((stat, i) => (
           <ScrollReveal key={i} direction={stat.dir} delay={i * 0.1}>
             <motion.div
               whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(42,206,209,0.15)" }}
-              className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 hover:border-[#2ACED1]/60 transition-all duration-300 cursor-pointer"
+              className={`p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 hover:border-[#2ACED1]/60 transition-all duration-300 cursor-pointer ${loading ? "opacity-50" : ""}`}
             >
               <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl bg-[#2ACED1]/10 flex items-center justify-center">
@@ -139,7 +113,7 @@ export default function DashboardPage() {
         <ScrollReveal direction="left" delay={0.1}>
           <motion.div
             whileHover={{ boxShadow: "0 10px 30px rgba(42,206,209,0.12)" }}
-            className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 transition-shadow duration-300"
+            className={`p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 transition-shadow duration-300 ${loading ? "opacity-50" : ""}`}
           >
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -151,7 +125,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <ResponsiveContainer width="100%" height={220}>
-              <AreaChart data={revenueData}>
+              <AreaChart data={stats?.revenueData || []}>
                 <defs>
                   <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#2ACED1" stopOpacity={0.3} />
@@ -175,7 +149,7 @@ export default function DashboardPage() {
         <ScrollReveal direction="right" delay={0.2}>
           <motion.div
             whileHover={{ boxShadow: "0 10px 30px rgba(42,206,209,0.12)" }}
-            className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 transition-shadow duration-300"
+            className={`p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 transition-shadow duration-300 ${loading ? "opacity-50" : ""}`}
           >
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -184,7 +158,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={transactionData}>
+              <BarChart data={stats?.transactionData || []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
                 <XAxis dataKey="name" tick={{ fill: "#6B7280", fontSize: 12 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#6B7280", fontSize: 12 }} axisLine={false} tickLine={false} />
@@ -203,7 +177,7 @@ export default function DashboardPage() {
       <ScrollReveal direction="bottom" delay={0.1}>
         <motion.div
           whileHover={{ boxShadow: "0 10px 30px rgba(42,206,209,0.08)" }}
-          className="rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 overflow-hidden transition-shadow duration-300"
+          className={`rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 overflow-hidden transition-shadow duration-300 ${loading ? "opacity-50" : ""}`}
         >
           <div className="p-6 border-b border-[#2ACED1]/10">
             <h3 className="text-lg font-bold text-[#000C22] dark:text-white">Recent Transactions</h3>
@@ -220,7 +194,7 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {recentTransactions.map((tx, i) => (
+                {(stats?.recentTransactions || []).map((tx, i) => (
                   <ScrollReveal key={tx.id} direction={i % 2 === 0 ? "left" : "right"} delay={0.15 + i * 0.08}>
                     <tr className="border-b border-[#000C22]/5 dark:border-white/5 last:border-0 hover:bg-[#2ACED1]/5 transition-colors cursor-pointer">
                       <td className="px-6 py-4">

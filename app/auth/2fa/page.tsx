@@ -20,7 +20,8 @@ export default function TwoFactorPage() {
   useEffect(() => {
     // If not logged in, boot them to login
     if (!isAuthenticated) {
-      router.push("/auth/login");
+      const t = setTimeout(() => import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/auth/login")), 0);
+      return () => clearTimeout(t);
     }
   }, [isAuthenticated, router]);
 
@@ -31,9 +32,9 @@ export default function TwoFactorPage() {
     setTimeout(() => {
       if (data.code === "123456") {
         setVerified(true);
-        // After 2FA, normally we go to dashboard. But let's verify if KYC is done? 
-        // For now, straight to dashboard.
-        router.push("/dashboard");
+        // After 2FA, normally we go to dashboard. But let's verify if KYC is done?
+        // For now, straight to dashboard. Use safePush to avoid race conditions.
+        import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/dashboard"));
       } else {
         setError("Invalid code. Please use 123456.");
       }

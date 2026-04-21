@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { motion } from "framer-motion";
+import api from "@/lib/api";
+import { useApi } from "@/lib/useApi";
 import { 
   KeyRound, 
   Copy, 
@@ -23,10 +25,17 @@ export default function ApiKeysPage() {
   const [showLive, setShowLive] = useState(false);
   const [showTest, setShowTest] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const [loadingKeys, setLoadingKeys] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Fetch keys from central API
+  const { data: keysFetched, loading: keysLoading, reload: reloadKeys } = useApi(() => api.getApiKeys(), [], true);
+  const { data: auditsFetched, loading: auditsLoading, reload: reloadAudits } = useApi(() => api.getApiKeyAudits(), [], true);
 
   if (!mounted) return null;
 
@@ -36,7 +45,7 @@ export default function ApiKeysPage() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const keys = [
+  const fallbackKeys = [
     { 
       id: "KEY_001",
       name: "Default Live Key", 
@@ -45,24 +54,50 @@ export default function ApiKeysPage() {
       env: "Live",
       lastUsed: "2m ago"
     },
-    { 
-      id: "KEY_002",
-      name: "Production Secret", 
-      type: "Secret", 
-      value: "sk_live_51Hg8rKJKG...yB7pZ", 
-      env: "Live",
-      lastUsed: "5m ago"
-    },
-    { 
-      id: "KEY_003",
-      name: "Staging Key", 
-      type: "Secret", 
-      value: "sk_test_51Hg8rKJKG...kL2nX", 
-      env: "Test",
-      lastUsed: "1hr ago"
-    },
   ];
 
+  const keys = keysFetched ?? fallbackKeys;
+
+  const toggleReveal = (id: string) => setRevealed((r) => ({ ...r, [id]: !r[id] }));
+
+  const createKey = async () => {
+    setCreating(true);
+    try {
+      await api.createApiKey({ name: "New Key", type: "Secret", env: "Test" });
+      reloadKeys();
+      reloadAudits && reloadAudits();
+    } catch (err) {
+      // ignore for now
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const rotateKey = async (id: string) => {
+    setLoadingKeys((s) => ({ ...s, [id]: true }));
+    try {
+      await api.rotateApiKey(id);
+      reloadKeys();
+      reloadAudits && reloadAudits();
+    } catch (err) {
+      // ignore
+    } finally {
+      setLoadingKeys((s) => ({ ...s, [id]: false }));
+    }
+  };
+
+  const removeKey = async (id: string) => {
+    setLoadingKeys((s) => ({ ...s, [id]: true }));
+    try {
+      await api.deleteApiKey(id);
+      reloadKeys();
+      reloadAudits && reloadAudits();
+    } catch (err) {
+      // ignore
+    } finally {
+      setLoadingKeys((s) => ({ ...s, [id]: false }));
+    }
+  };
   return (
     <div className="flex flex-col gap-8">
       <ScrollReveal direction="left">
@@ -71,16 +106,18 @@ export default function ApiKeysPage() {
             <h1 className="text-2xl md:text-3xl font-bold text-[#000C22] dark:text-white mb-1">API Keys</h1>
             <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium">Manage and secure your application's access to the KopoPay API.</p>
           </div>
-          <ScrollReveal direction="right" delay={0.1}>
-            <motion.button
-              whileHover={{ y: -2, boxShadow: "0 8px 25px rgba(42,206,209,0.3)" }}
-              whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-action-button text-white font-bold shadow-lg transition-all duration-200"
-            >
-              <Plus className="w-5 h-5" />
-              Create Secret Key
-            </motion.button>
-          </ScrollReveal>
+            <ScrollReveal direction="right" delay={0.1}>
+              <motion.button
+                onClick={createKey}
+                disabled={creating}
+                whileHover={{ y: -2, boxShadow: "0 8px 25px rgba(42,206,209,0.3)" }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-action-button text-white font-bold shadow-lg transition-all duration-200 disabled:opacity-60"
+              >
+                <Plus className="w-5 h-5" />
+                {creating ? "Creating…" : "Create Secret Key"}
+              </motion.button>
+            </ScrollReveal>
         </div>
       </ScrollReveal>
 
@@ -121,10 +158,10 @@ export default function ApiKeysPage() {
                        </div>
                     </div>
                     <div className="flex items-center gap-2">
-                       <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-[#000C22]/30 dark:text-[#D8F4F7]/30 transition-colors">
+                       <button onClick={() => rotateKey(key.id)} disabled={loadingKeys[key.id]} className={`p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-[#000C22]/30 dark:text-[#D8F4F7]/30 transition-colors ${loadingKeys[key.id] ? 'opacity-60 cursor-not-allowed' : ''}`}>
                          <RefreshCw className="w-4 h-4" />
                        </button>
-                       <button className="p-2 rounded-lg hover:bg-red-500/10 text-[#000C22]/30 dark:text-[#D8F4F7]/30 hover:text-red-500 transition-colors">
+                       <button onClick={() => removeKey(key.id)} disabled={loadingKeys[key.id]} className={`p-2 rounded-lg hover:bg-red-500/10 text-[#000C22]/30 dark:text-[#D8F4F7]/30 hover:text-red-500 transition-colors ${loadingKeys[key.id] ? 'opacity-60 cursor-not-allowed' : ''}`}>
                          <Trash2 className="w-4 h-4" />
                        </button>
                     </div>
@@ -132,19 +169,19 @@ export default function ApiKeysPage() {
 
                   <div className="flex items-center gap-4 bg-black/5 dark:bg-black/50 p-3 rounded-xl border border-black/5 dark:border-white/5">
                     <code className="flex-1 font-mono text-sm text-[#000C22] dark:text-[#D8F4F7] truncate">
-                      {key.type === "Secret" && !showLive ? "sk_live_••••••••••••••••••••••••" : key.value}
+                      {key.type === "Secret" && !revealed[key.id] ? "sk_••••••••••••••••••••••••" : (key.value || "")}
                     </code>
                     <div className="flex items-center gap-1">
                        {key.type === "Secret" && (
                          <button 
-                           onClick={() => setShowLive(!showLive)}
+                           onClick={() => toggleReveal(key.id)}
                            className="p-2 rounded-lg hover:bg-white/10 text-[#000C22]/40 dark:text-[#D8F4F7]/40 transition-colors"
                          >
-                           {showLive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                           {revealed[key.id] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                          </button>
                        )}
                        <button 
-                         onClick={() => handleCopy(key.value, key.id)}
+                         onClick={() => handleCopy(key.value || "", key.id)}
                          className="p-2 rounded-lg hover:bg-white/10 text-[#2ACED1] transition-colors"
                        >
                          {copiedKey === key.id ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}

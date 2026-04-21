@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { safePush } from "@/lib/safeRouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthLayout } from "@/components/templates/AuthLayout";
 import { Button } from "@/components/atoms/Button";
@@ -29,7 +30,7 @@ export default function IdentityVerificationPage() {
   };
 
   const finishOnboarding = () => {
-    router.push("/dashboard");
+    safePush(router, "/dashboard");
   };
 
   return (

@@ -9,6 +9,7 @@ import { AnimatedGlobe } from "@/components/atoms/AnimatedGlobe";
 import { ScrollProgressReveal } from "@/components/atoms/ScrollProgressReveal";
 import { Button } from "@/components/atoms/Button";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import LandingShowcaseSection from "@/components/organisms/LandingShowcaseSection";
 import { ChevronRight, ShieldCheck, ArrowRight, Code, Terminal, Layers, LifeBuoy } from "lucide-react";
 import { getIcon } from "@/components/IconRegistry";
 
@@ -326,6 +327,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+        {/* ─── NEW: Showcase Section Above Footer ─── */}
+        <LandingShowcaseSection />
 
       {/* ─── Footer (Updated with Blueish Navy Color) ─── */}
       <ScrollReveal direction="bottom">

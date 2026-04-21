@@ -142,7 +142,8 @@ export const CommandCenter = () => {
   const handleSelect = (url: string) => {
     setIsOpen(false);
     setQuery("");
-    router.push(url);
+    // defer navigation to avoid router initialization races
+    import("@/lib/safeRouter").then(({ safePush }) => safePush(router, url));
   };
 
   const getIconForType = (type: SearchResult["type"]) => {
