@@ -1,0 +1,10 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#FFFFFF"/>
+  <circle cx="64" cy="64" r="42" fill="#000C22"/>
+  <circle cx="64" cy="64" r="30" fill="#0C2746" stroke="#FFFFFF" stroke-width="4"/>
+  <path d="M64 34V94" stroke="#FFFFFF" stroke-width="2" opacity="0.85"/>
+  <path d="M34 64H94" stroke="#FFFFFF" stroke-width="2" opacity="0.85"/>
+  <path d="M43 43L85 85" stroke="#2ACED1" stroke-width="3" opacity="0.9"/>
+  <path d="M85 43L43 85" stroke="#2ACED1" stroke-width="3" opacity="0.9"/>
+  <text x="64" y="27" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#011B3B">BMW</text>
+</svg>

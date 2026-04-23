@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -149,8 +150,14 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isSidebarOpe
         className="relative z-20 flex h-full flex-col border-r border-black/5 bg-white transition-all duration-300 dark:border-white/5 dark:bg-[#011B3B]"
       >
         <div className="flex h-16 items-center gap-3 whitespace-nowrap border-b border-black/5 px-4 overflow-hidden dark:border-white/5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-action-button">
-            <span className="text-sm font-bold text-white">K</span>
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gradient-action-button">
+            <Image
+              src="/kopopay-mark.svg"
+              alt="Kopo Pay"
+              width={32}
+              height={32}
+              className="h-full w-full object-cover"
+            />
           </div>
           {isSidebarOpen && <span className="font-bold tracking-tight">Kopo Pay</span>}
         </div>

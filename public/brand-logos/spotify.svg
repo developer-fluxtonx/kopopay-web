@@ -1,0 +1,8 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#FFFFFF"/>
+  <circle cx="64" cy="56" r="28" fill="#1DB954"/>
+  <path d="M45 54C58 49 72 49 84 53" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M48 63C58 59 71 59 81 62" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" opacity="0.95"/>
+  <path d="M51 71C59 68 68 68 77 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+  <text x="64" y="110" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#011B3B">Spotify</text>
+</svg>

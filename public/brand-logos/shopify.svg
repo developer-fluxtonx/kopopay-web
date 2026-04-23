@@ -1,0 +1,8 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#FFFFFF"/>
+  <path d="M46 36L78 42L84 92L50 86L46 36Z" fill="#95BF47"/>
+  <path d="M55 44C55 37.5 59.5 33 66 33C71.5 33 76 36.7 76 42.5V46" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M58 57C58 52.5 61.4 49.5 66 49.5C70.6 49.5 74 52.4 74 56.8" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M60 71C60 66.9 62.8 64 66.8 64C71 64 74 67 74 71.2" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <text x="64" y="110" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#011B3B">Shopify</text>
+</svg>

@@ -10,17 +10,19 @@ import {
 import { Button } from "@/components/atoms/Button";
 import { CreditCard, Wallet, Smartphone, Landmark, Palette, Globe, Layout, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
+import { PAYMENT_METHODS } from "@/lib/paymentConfigs";
 
 export default function PaymentsSettingsPage() {
-  const [methods, setMethods] = useState({
+  const [methods, setMethods] = useState<Record<string, boolean>>({
     cards: true,
-    applePay: true,
-    googlePay: true,
-    bankTransfer: false,
+    apple_pay: true,
+    google_pay: true,
+    bank_transfer: false,
     crypto: false,
+    link: true,
   });
 
-  const toggle = (key: keyof typeof methods) => {
+  const toggle = (key: string) => {
     setMethods(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
@@ -40,18 +42,15 @@ export default function PaymentsSettingsPage() {
                  <CreditCard className="h-4 w-4 text-[#2ACED1]" />
                  <span className="text-xs font-bold uppercase tracking-widest text-[#000C22]/40 dark:text-white/40">Cards & Traditional</span>
               </div>
-              <SettingsToggleRow 
-                 title="Credit & Debit Cards" 
-                 description="Visa, Mastercard, Amex, Discover."
-                 checked={methods.cards}
-                 onToggle={() => toggle("cards")}
-              />
-              <SettingsToggleRow 
-                 title="Bank Transfers" 
-                 description="ACH, SEPA, and SWIFT transfers."
-                 checked={methods.bankTransfer}
-                 onToggle={() => toggle("bankTransfer")}
-              />
+              {PAYMENT_METHODS.filter(m => m.category === 'traditional' || m.category === 'bank').map(method => (
+                 <SettingsToggleRow 
+                   key={method.id}
+                   title={method.title} 
+                   description={method.description}
+                   checked={methods[method.id] || false}
+                   onToggle={() => toggle(method.id)}
+                 />
+              ))}
            </div>
 
            <div className="p-4 rounded-2xl border border-black/5 bg-white/50 dark:bg-white/5 dark:border-white/5 space-y-4">
@@ -59,18 +58,15 @@ export default function PaymentsSettingsPage() {
                  <Wallet className="h-4 w-4 text-orange-500" />
                  <span className="text-xs font-bold uppercase tracking-widest text-[#000C22]/40 dark:text-white/40">Digital Wallets</span>
               </div>
-              <SettingsToggleRow 
-                 title="Apple Pay" 
-                 description="One-click checkout for iOS users."
-                 checked={methods.applePay}
-                 onToggle={() => toggle("applePay")}
-              />
-              <SettingsToggleRow 
-                 title="Google Pay" 
-                 description="Secure wallet payments for Android."
-                 checked={methods.googlePay}
-                 onToggle={() => toggle("googlePay")}
-              />
+              {PAYMENT_METHODS.filter(m => m.category === 'digital').map(method => (
+                 <SettingsToggleRow 
+                   key={method.id}
+                   title={method.title} 
+                   description={method.description}
+                   checked={methods[method.id] || false}
+                   onToggle={() => toggle(method.id)}
+                 />
+              ))}
            </div>
         </div>
       </SettingsPanel>

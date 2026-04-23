@@ -1,0 +1,8 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#FFFFFF"/>
+  <circle cx="64" cy="64" r="44" fill="#000C22" fill-opacity="0.96"/>
+  <path d="M38 74.5C45.5 67 57.5 62.5 70.5 62.5C77.5 62.5 83.8 63.6 89 65.5" stroke="#2ACED1" stroke-width="6" stroke-linecap="round"/>
+  <path d="M82 64L92 66.8L89.4 56.9" stroke="#2ACED1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="64" y="56" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Amazon</text>
+  <text x="64" y="82" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="4" fill="#D8F4F7">STORE</text>
+</svg>
