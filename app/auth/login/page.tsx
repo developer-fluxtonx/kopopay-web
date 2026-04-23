@@ -9,31 +9,39 @@ import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
 import { useAuthStore } from "@/store/authStore";
 
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
+const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "test@kopopay.com";
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD ?? "demo-password";
+
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const login = useAuthStore(state => state.login);
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: LoginFormValues) => {
     setIsLoading(true);
     setError("");
     
     // Simulate API Call
     setTimeout(() => {
-      if (data.email === "test@kopopay.com" && data.password === "password123") {
+      if (data.email === DEMO_EMAIL && data.password === DEMO_PASSWORD) {
         // Dummy Auth Logic
         login({
           id: "usr_dummy123",
           name: "John Doe",
-          email: "test@kopopay.com",
+          email: DEMO_EMAIL,
           role: "merchant",
           verified: false // False to trigger 2FA / KYC
         });
         // defer navigation to avoid dispatching before router init
         setTimeout(() => import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/auth/2fa")), 0);
       } else {
-        setError("Invalid email or password. Use test@kopopay.com / password123");
+        setError(`Invalid email or password. Use ${DEMO_EMAIL} / demo-password`);
       }
       setIsLoading(false);
     }, 1000);
@@ -44,7 +52,7 @@ export default function LoginPage() {
       title="Sign in to your account" 
       subtitle="Enter your email and password to access your dashboard."
     >
-      <Form onSubmit={handleLogin} defaultValues={{ email: "", password: "" }}>
+      <Form<LoginFormValues> onSubmit={handleLogin} defaultValues={{ email: "", password: "" }}>
         {({ register }) => (
           <>
             {error && (
@@ -56,7 +64,7 @@ export default function LoginPage() {
             <Input 
               label="Email address" 
               type="email" 
-              placeholder="test@kopopay.com" 
+              placeholder={DEMO_EMAIL} 
               required 
               {...register("email")}
             />
@@ -68,7 +76,7 @@ export default function LoginPage() {
               </div>
               <Input 
                 type="password" 
-                placeholder="password123" 
+                placeholder="demo-password" 
                 required 
                 {...register("password")}
               />

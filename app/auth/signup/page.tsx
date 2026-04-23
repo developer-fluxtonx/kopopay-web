@@ -8,16 +8,22 @@ import { Form } from "@/components/molecules/Form";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
 
+type SignupFormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export default function SignupPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignup = async (data: any) => {
+  const handleSignup = async () => {
     setIsLoading(true);
     // Simulate API Call
     setTimeout(() => {
-      // Allow any signup for test, route to login
-      alert("Account created! Please log in with test@kopopay.com / password123");
+      // Demo signup completes locally and returns users to login.
+      alert("Account created! Please log in with the demo credentials.");
       // defer via safePush to avoid router initialization races
       import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/auth/login"));
     }, 1000);
@@ -28,7 +34,7 @@ export default function SignupPage() {
       title="Create your account" 
       subtitle="Join Kopo Pay to start accepting payments and scaling your business."
     >
-      <Form onSubmit={handleSignup} defaultValues={{ name: "", email: "", password: "" }}>
+      <Form<SignupFormValues> onSubmit={handleSignup} defaultValues={{ name: "", email: "", password: "" }}>
         {({ register }) => (
           <>
             <Input 
