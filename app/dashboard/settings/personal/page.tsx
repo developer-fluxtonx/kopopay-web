@@ -11,17 +11,7 @@ export default function PersonalSettingsGroupPage() {
   return (
     <SettingsSectionLanding
       group={group}
-      intro="Keep identity, communication, and developer access together so the account owner can manage the section without jumping between unrelated areas."
-      notes={[
-        "Identity, recovery, and active sessions stay in one place.",
-        "Communication preferences can be wired to email, SMS, and push APIs separately.",
-        "Developer tools stay isolated from account-level business controls.",
-      ]}
-      nextSteps={[
-        "Personal details API",
-        "Communication preferences API",
-        "Developer keys and webhook API",
-      ]}
+      intro="Keep identity, verification, communication, and developer access together so the account owner can manage personal compliance work without jumping between unrelated areas."
     />
   );
 }

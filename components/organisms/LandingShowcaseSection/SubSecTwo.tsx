@@ -102,12 +102,14 @@ const SubSecTwo: React.FC = () => {
 
             <rect x="556" y="204" width="88" height="88" rx="18" fill="url(#coreGrad)" />
             <rect x="558" y="206" width="84" height="84" rx="16" fill="rgba(0,0,0,0.16)" />
-            <text x="600" y="258" textAnchor="middle" fill="#ffffff" fontSize="26" fontWeight="800">
-              K
-            </text>
-            <text x="600" y="275" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="700" opacity="0.9">
-              Kopo Pay
-            </text>
+            <image
+              href="/brand-logos/kopoPayLogo.png"
+              x="570"
+              y="214"
+              width="60"
+              height="68"
+              preserveAspectRatio="xMidYMid meet"
+            />
 
             <rect x="552" y="314" width="96" height="40" rx="12" fill="#2ACED1" fillOpacity="0.18" stroke="#2ACED1" strokeOpacity="0.65" strokeWidth="1" />
             <text x="600" y="338" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="700">

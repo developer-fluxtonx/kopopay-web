@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Environment, Text, ContactShadows } from "@react-three/drei";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Float, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 
@@ -65,6 +65,9 @@ const MovingGradientMesh = () => {
 
 const CreditCard = () => {
   const group = useRef<THREE.Group>(null);
+  const logoTexture = useLoader(THREE.TextureLoader, "/brand-logos/kopoPayLogo.png");
+
+  logoTexture.colorSpace = THREE.SRGBColorSpace;
   
   useFrame((state) => {
     if (group.current) {
@@ -87,15 +90,10 @@ const CreditCard = () => {
             clearcoatRoughness={0.1}
           />
         </mesh>
-        <Text
-          position={[-1.2, -0.6, 0.06]}
-          fontSize={0.2}
-          color="#D8F4F7"
-          anchorX="left"
-          anchorY="middle"
-        >
-          Kopo Pay
-        </Text>
+        <mesh position={[-1.08, -0.16, 0.061]}>
+          <planeGeometry args={[0.62, 0.96]} />
+          <meshBasicMaterial map={logoTexture} transparent toneMapped={false} />
+        </mesh>
         <mesh position={[1.1, 0.5, 0.06]}>
           <boxGeometry args={[0.6, 0.4, 0.01]} />
           <meshStandardMaterial color="#FFD700" metalness={1} roughness={0.3} />

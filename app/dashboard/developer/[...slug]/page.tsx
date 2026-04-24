@@ -10,12 +10,13 @@ import {
 const totalDeveloperRoutes =
   developerPrimaryItems.length + developerMoreItems.length + developerDocsItems.length;
 
-export default function DeveloperSurfacePage({
+export default async function DeveloperSurfacePage({
   params,
 }: {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 }) {
-  const segments = params.slug ?? [];
+  const resolvedParams = await params;
+  const segments = resolvedParams.slug ?? [];
   const context = resolveDeveloperContext(segments);
   const currentHref =
     segments.length === 0

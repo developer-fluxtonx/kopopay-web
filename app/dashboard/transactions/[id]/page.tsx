@@ -29,7 +29,8 @@ export default function TransactionDetailPage() {
   const [mounted, setMounted] = useState(false);
   const params = useParams();
   const router = useRouter();
-  const id = params.id;
+  const idParam = params.id;
+  const id = Array.isArray(idParam) ? idParam[0] : idParam;
   const [activeTab, setActiveTab] = useState("overview");
 
   React.useEffect(() => {
@@ -155,12 +156,12 @@ export default function TransactionDetailPage() {
                   <h4 className="text-sm font-bold uppercase tracking-widest text-[#000C22]/40 dark:text-[#D8F4F7]/40 mb-6">Customer & Origin</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
                      {[
-                        { label: "Customer Name", value: txn.customer.name, link: true },
-                        { label: "Email Address", value: txn.customer.email },
-                        { label: "Customer ID", value: txn.customer.id },
-                        { label: "IP Address", value: txn.customer.ip },
-                        { label: "Payment Method", value: `${txn.payment_method.brand} •••• ${txn.payment_method.last4}` },
-                        { label: "Bank of Origin", value: txn.payment_method.issuer },
+                        { label: "Customer Name", value: txn.customer?.name, link: true },
+                        { label: "Email Address", value: txn.customer?.email },
+                        { label: "Customer ID", value: txn.customer?.id },
+                        { label: "IP Address", value: (txn.customer as any)?.ip },
+                        { label: "Payment Method", value: `${txn.payment_method?.brand} •••• ${txn.payment_method?.last4}` },
+                        { label: "Bank of Origin", value: txn.payment_method?.issuer },
                      ].map((item, i) => (
                         <div key={i}>
                            <p className="text-xs text-[#000C22]/40 dark:text-[#D8F4F7]/40 font-bold uppercase mb-1">{item.label}</p>
@@ -185,15 +186,15 @@ export default function TransactionDetailPage() {
                   </div>
                   <div className="flex items-center gap-4 mb-6">
                      <div className="text-center p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex-1">
-                        <p className="text-2xl font-bold text-emerald-500">{txn.fraud_details.risk_score}</p>
+                        <p className="text-2xl font-bold text-emerald-500">{txn.fraud_details?.risk_score}</p>
                         <p className="text-[10px] font-bold text-emerald-500/60 uppercase">Normal Risk</p>
                      </div>
                   </div>
                   <div className="space-y-4">
                      {[
-                        { label: "Outcome", value: txn.fraud_details.outcome, color: "text-emerald-500" },
-                        { label: "CVC Check", value: txn.fraud_details.cvc_check, icon: "CheckCircle2" },
-                        { label: "Address Check", value: txn.fraud_details.address_check, icon: "CheckCircle2" },
+                        { label: "Outcome", value: txn.fraud_details?.outcome, color: "text-emerald-500" },
+                        { label: "CVC Check", value: txn.fraud_details?.cvc_check, icon: "CheckCircle2" },
+                        { label: "Address Check", value: txn.fraud_details?.address_check, icon: "CheckCircle2" },
                      ].map((check, i) => (
                         <div key={i} className="flex items-center justify-between">
                            <span className="text-xs font-bold text-[#000C22]/40 dark:text-[#D8F4F7]/40">{check.label}</span>

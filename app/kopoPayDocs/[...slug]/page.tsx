@@ -13,9 +13,9 @@ export function generateStaticParams() {
 export default async function KopoPayDocsPage({
   params,
 }: {
-  params: { slug?: string[] } | Promise<{ slug?: string[] }>;
+  params: Promise<{ slug?: string[] }>;
 }) {
-  const resolvedParams = await Promise.resolve(params);
+  const resolvedParams = await params;
   const slug = Array.isArray(resolvedParams.slug) ? resolvedParams.slug : [];
 
   if (slug.length === 0) {

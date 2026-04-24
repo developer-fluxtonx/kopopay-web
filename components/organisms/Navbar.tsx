@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import { Button } from "../atoms/Button";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import {
   marketingNavItems,
   navbarProductColumns,
@@ -28,9 +29,9 @@ export const Navbar = () => {
   const backgroundColor = useTransform(
     scrollY,
     [0, 50],
-    ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.8)"]
+    ["rgba(255, 255, 255, 0)", "rgba(0, 142, 150, 0.95)"] // Brand Cyan Dark with opacity
   );
-  const backdropBlur = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(12px)"]);
+  const backdropBlur = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(16px)"]);
   const otherNavItems = marketingNavItems.filter(
     (item) => item.label !== "Products" && item.label !== "Solutions"
   );
@@ -102,15 +103,15 @@ export const Navbar = () => {
     >
       <div className="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-action-button">
-            <span className="text-lg font-bold text-white">K</span>
-          </div>
-          <span className="text-xl font-bold tracking-tight text-[#000C22] dark:text-white">
-            Kopo Pay
-          </span>
+          <BrandLogo
+            priority
+            size={38}
+            labelClassName="text-xl font-bold tracking-tight text-[#000C22] dark:text-white group-hover:text-[#2ACED1] transition-colors"
+            className="group"
+          />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm font-medium text-[#000C22]/80 dark:text-[#D8F4F7]/80 md:flex">
+        <nav className="hidden items-center gap-8 text-sm font-semibold text-[#000C22]/80 dark:text-white md:flex">
           <div
             className="relative"
           >
@@ -129,7 +130,7 @@ export const Navbar = () => {
               }}
               className={`group inline-flex items-center gap-2 rounded-full px-1 py-1 transition-colors ${
                 isProductsMenuOpen
-                  ? "text-[#008E96] dark:text-[#2ACED1]"
+                  ? "text-[#2ACED1]"
                   : "hover:text-[#2ACED1]"
               }`}
             >
@@ -160,7 +161,7 @@ export const Navbar = () => {
               }}
               className={`group inline-flex items-center gap-2 rounded-full px-1 py-1 transition-colors ${
                 isSolutionsMenuOpen
-                  ? "text-[#008E96] dark:text-[#2ACED1]"
+                  ? "text-[#2ACED1]"
                   : "hover:text-[#2ACED1]"
               }`}
             >
@@ -179,7 +180,7 @@ export const Navbar = () => {
               href={item.href}
               className={`transition-colors ${
                 isActivePath(pathname, item.href)
-                  ? "text-[#008E96] dark:text-[#2ACED1]"
+                  ? "text-[#2ACED1]"
                   : "hover:text-[#2ACED1]"
               }`}
             >
@@ -191,7 +192,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/auth/login"
-            className="hidden text-sm font-medium transition-colors hover:text-[#2ACED1] sm:inline-block"
+            className="hidden text-sm font-bold transition-colors text-[#000C22]/80 dark:text-white hover:text-[#2ACED1] sm:inline-block"
           >
             Sign in
           </Link>

@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { BrandLogo } from "../atoms/BrandLogo";
 
 export const AuthLayout = ({ children, title, subtitle }: { children: React.ReactNode, title: string, subtitle: string }) => {
   return (
@@ -14,10 +15,11 @@ export const AuthLayout = ({ children, title, subtitle }: { children: React.Reac
         
         <div className="z-10">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-action-button flex items-center justify-center">
-              <span className="text-white font-bold text-lg">K</span>
-            </div>
-            <span className="font-bold text-xl tracking-tight text-white">Kopo Pay</span>
+            <BrandLogo
+              priority
+              size={38}
+              labelClassName="font-bold text-xl tracking-tight text-white"
+            />
           </Link>
         </div>
         
@@ -44,10 +46,11 @@ export const AuthLayout = ({ children, title, subtitle }: { children: React.Reac
           className="w-full max-w-md bg-white dark:bg-[#011B3B] rounded-2xl shadow-xl border border-black/5 dark:border-white/5 p-8"
         >
           <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 rounded-lg bg-gradient-action-button flex items-center justify-center">
-               <span className="text-white font-bold text-lg">K</span>
-            </div>
-            <span className="font-bold text-xl tracking-tight text-[#000C22] dark:text-white">Kopo Pay</span>
+            <BrandLogo
+              priority
+              size={38}
+              labelClassName="font-bold text-xl tracking-tight text-[#000C22] dark:text-white"
+            />
           </div>
 
           <div className="mb-8">

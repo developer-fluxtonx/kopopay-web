@@ -16,7 +16,8 @@ import {
   ArrowUpRight,
   BookOpen,
   MapPin,
-  Scale
+  Scale,
+  MoreVertical
 } from "lucide-react";
 
 const atlasCompanies = [

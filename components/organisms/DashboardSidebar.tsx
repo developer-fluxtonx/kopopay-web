@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -12,10 +11,12 @@ import {
   X,
 } from "lucide-react";
 import { getIcon } from "@/components/IconRegistry";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import { Button } from "@/components/atoms/Button";
 import { Card } from "@/components/atoms/Card";
 import { Modal } from "@/components/molecules/Modal";
 import { DeveloperHubDialog } from "./DeveloperHubDialog";
+import { settingsGroups } from "@/app/dashboard/settings/settings.config";
 import {
   dashboardMainNav,
   dashboardShortcutSeeds,
@@ -76,6 +77,9 @@ const getInitialProductGroup = (pathname: string) => {
 const isActivePath = (pathname: string, href: string) =>
   pathname === href || pathname.startsWith(`${href}/`);
 
+const isSettingsPath = (pathname: string) =>
+  pathname === "/dashboard/settings" || pathname.startsWith("/dashboard/settings/");
+
 const normalizeShortcutHref = (value: string) => {
   if (!value) {
     return value;
@@ -93,6 +97,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isSidebarOpe
   const [expandedGroup, setExpandedGroup] = useState<string>(() =>
     getInitialProductGroup(pathname)
   );
+  const [isSettingsOpen, setIsSettingsOpen] = useState(() => isSettingsPath(pathname));
   const [isShortcutModalOpen, setIsShortcutModalOpen] = useState(false);
   const [isDeveloperModalOpen, setIsDeveloperModalOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
@@ -105,6 +110,12 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isSidebarOpe
 
   useEffect(() => {
     setExpandedGroup(getInitialProductGroup(pathname));
+  }, [pathname]);
+
+  useEffect(() => {
+    if (isSettingsPath(pathname)) {
+      setIsSettingsOpen(true);
+    }
   }, [pathname]);
 
   const shortcuts = [...dashboardShortcutSeeds, ...customShortcuts];
@@ -150,16 +161,12 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isSidebarOpe
         className="relative z-20 flex h-full flex-col border-r border-black/5 bg-white transition-all duration-300 dark:border-white/5 dark:bg-[#011B3B]"
       >
         <div className="flex h-16 items-center gap-3 whitespace-nowrap border-b border-black/5 px-4 overflow-hidden dark:border-white/5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gradient-action-button">
-            <Image
-              src="/kopopay-mark.svg"
-              alt="Kopo Pay"
-              width={32}
-              height={32}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          {isSidebarOpen && <span className="font-bold tracking-tight">Kopo Pay</span>}
+          <BrandLogo
+            priority
+            size={36}
+            showLabel={isSidebarOpen}
+            labelClassName="font-bold tracking-tight text-[#000C22] dark:text-white"
+          />
         </div>
 
         <div className="flex-1 overflow-y-auto py-5 custom-scrollbar">
@@ -179,6 +186,128 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ isSidebarOpe
               <nav className="flex flex-col gap-1.5">
                 {dashboardMainNav.map((item) => {
                   const active = isActivePath(pathname, item.href);
+                  const isSettingsItem = item.id === "settings";
+
+                  if (isSettingsItem && isSidebarOpen) {
+                    const settingsActive = isSettingsPath(pathname);
+
+                    return (
+                      <div
+                        key={item.id}
+                        className={`rounded-3xl border transition-colors ${
+                          isSettingsOpen || settingsActive
+                            ? "border-[#2ACED1]/20 bg-[#2ACED1]/5"
+                            : "border-black/5 bg-white/65 hover:border-[#2ACED1]/15 dark:border-white/5 dark:bg-white/5"
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setIsSettingsOpen((current) => !current)}
+                          className={`${compactLinkClass} w-full text-[#000C22]/70 dark:text-[#D8F4F7]/70`}
+                        >
+                          <div
+                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors ${
+                              settingsActive || isSettingsOpen
+                                ? "border-[#2ACED1]/30 bg-white/85 dark:bg-[#000C22]"
+                                : "border-black/5 bg-black/5 dark:border-white/5 dark:bg-white/5"
+                            }`}
+                          >
+                            {(() => {
+                              const Icon = getIcon(item.icon);
+                              return <Icon className="h-5 w-5" style={{ color: item.accent }} />;
+                            })()}
+                          </div>
+                          <div className="min-w-0 flex-1 text-left">
+                            <div className="flex items-center justify-between gap-2">
+                              <div>
+                                <p className="text-sm font-semibold text-[#000C22] dark:text-white">
+                                  {item.label}
+                                </p>
+                                <p className="mt-0.5 text-xs leading-5 text-[#000C22]/50 dark:text-[#D8F4F7]/50">
+                                  {item.description}
+                                </p>
+                              </div>
+                              <ChevronRight
+                                className={`h-4 w-4 text-[#000C22]/25 transition-transform dark:text-[#D8F4F7]/25 ${
+                                  isSettingsOpen ? "rotate-90 text-[#2ACED1]" : ""
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        </button>
+
+                        {isSettingsOpen && (
+                          <div className="px-2 pb-2">
+                            <div className="grid gap-1">
+                              <Link
+                                href="/dashboard/settings"
+                                className={`group flex items-center gap-3 rounded-2xl px-3 py-2 transition-colors ${
+                                  pathname === "/dashboard/settings"
+                                    ? "bg-white/80 text-[#008E96] dark:bg-[#000C22] dark:text-[#2ACED1]"
+                                    : "text-[#000C22]/70 hover:bg-white/70 dark:text-[#D8F4F7]/70 dark:hover:bg-white/5"
+                                }`}
+                              >
+                                <div
+                                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-colors ${
+                                    pathname === "/dashboard/settings"
+                                      ? "border-[#2ACED1]/25 bg-[#2ACED1]/10"
+                                      : "border-black/5 bg-black/5 dark:border-white/5 dark:bg-white/5"
+                                  }`}
+                                >
+                                  <div className="h-2.5 w-2.5 rounded-full bg-[#2ACED1]" />
+                                </div>
+                                <p className="text-sm font-medium text-[#000C22] dark:text-white">
+                                  Overview
+                                </p>
+                              </Link>
+
+                              {settingsGroups.map((group) => (
+                                <div key={group.id} className="pt-2">
+                                  <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#000C22]/35 dark:text-[#D8F4F7]/35">
+                                    {group.label}
+                                  </p>
+                                  <div className="mt-1 grid gap-1">
+                                    {group.items.map((settingsItem) => {
+                                      const settingsItemActive = isActivePath(pathname, settingsItem.href);
+                                      const SettingsIcon = getIcon(settingsItem.icon);
+
+                                      return (
+                                        <Link
+                                          key={settingsItem.id}
+                                          href={settingsItem.href}
+                                          className={`group flex items-center gap-3 rounded-2xl px-3 py-2 transition-colors ${
+                                            settingsItemActive
+                                              ? "bg-white/80 text-[#008E96] dark:bg-[#000C22] dark:text-[#2ACED1]"
+                                              : "text-[#000C22]/70 hover:bg-white/70 dark:text-[#D8F4F7]/70 dark:hover:bg-white/5"
+                                          }`}
+                                        >
+                                          <div
+                                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-colors ${
+                                              settingsItemActive
+                                                ? "border-[#2ACED1]/25 bg-[#2ACED1]/10"
+                                                : "border-black/5 bg-black/5 dark:border-white/5 dark:bg-white/5"
+                                            }`}
+                                          >
+                                            <SettingsIcon
+                                              className="h-4 w-4"
+                                              style={{ color: settingsItem.accent }}
+                                            />
+                                          </div>
+                                          <p className="text-sm font-medium text-[#000C22] dark:text-white">
+                                            {settingsItem.label}
+                                          </p>
+                                        </Link>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
 
                   return (
                     <Link

@@ -61,8 +61,8 @@ export default function LandingPage() {
       <Navbar />
       
       {/* ─── Hero Section ─── */}
-      {/* Reduced pt-32 to pt-12 (80% space reduction) */}
-      <section className="relative pt-12 pb-8 md:pt-16 md:pb-16 px-6 min-h-[80vh] flex items-center">
+      {/* Slightly increase hero top padding so the fixed navbar has clearer separation */}
+      <section className="relative pt-20 pb-8 md:pt-24 md:pb-16 px-6 min-h-[80vh] flex items-center">
         <HeroBackground />
         
         <ScrollProgressReveal 

@@ -26,6 +26,7 @@ export interface Transaction {
   status: string;
   date: string;
   description?: string;
+  method?: string;
   customer?: Customer | null;
   payment_method?: PaymentMethod | null;
   fraud_details?: Record<string, any>;
@@ -37,6 +38,8 @@ export interface Product {
   price?: number | string;
   type?: string;
   status?: string;
+  stock?: string | number;
+  sales?: string | number;
 }
 
 export interface Balance {

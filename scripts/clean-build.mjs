@@ -1,6 +1,6 @@
 import { rm } from "node:fs/promises";
 
-const targets = [".next-build"];
+const targets = [".next", ".next-build", "build"];
 
 for (const target of targets) {
   try {

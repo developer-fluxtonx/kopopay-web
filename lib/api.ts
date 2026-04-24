@@ -1,7 +1,7 @@
 import { 
   Transaction, Customer, Product, Balance, Payout, 
   DashboardStats, ReportData, Dispute, RadarEvent, 
-  RadarRule, ApiKey, Webhook, SettingsStats 
+  RadarRule, ApiKey, Webhook, SettingsStats, WebhookPayload, UserProfile
 } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
@@ -36,6 +36,7 @@ const mockTransactions: Transaction[] = [
     status: "Succeeded",
     date: "Apr 15, 2026",
     description: "Cloud Hosting - Monthly Subscription (O-8912)",
+    method: "Visa •••• 4242",
     customer: { id: "cus_9821HY", name: "Sarah Johnson", email: "sarah@acme.com" },
   },
   {
@@ -45,6 +46,7 @@ const mockTransactions: Transaction[] = [
     status: "Processed",
     date: "Apr 15, 2026",
     description: "Refund",
+    method: "Visa •••• 4242",
     customer: { id: "cus_9822AB", name: "Michael Chen", email: "michael@startup.io" },
   },
 ];
@@ -55,8 +57,8 @@ const mockCustomers: Customer[] = [
 ];
 
 const mockProducts: Product[] = [
-  { id: "PROD_001", name: "Premium Subscription", price: "$49.00/mo", type: "Recurring", status: "Active" },
-  { id: "PROD_002", name: "Enterprise License", price: "$499.00/yr", type: "Recurring", status: "Active" },
+  { id: "PROD_001", name: "Premium Subscription", price: "$49.00/mo", type: "Recurring", status: "Active", stock: "Unlimited", sales: "1,240" },
+  { id: "PROD_002", name: "Enterprise License", price: "$499.00/yr", type: "Recurring", status: "Active", stock: "Unlimited", sales: "850" },
 ];
 
 const mockBalance: Balance = { currency: "USD", available: 42580, pending: 8940 };

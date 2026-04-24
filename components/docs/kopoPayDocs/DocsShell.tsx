@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, Search, Sparkles, X } from "lucide-react";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import { docsPages, docsSidebarGroups, docsTopCategories } from "@/lib/kopoPayDocs/docsData";
 
 interface DocsShellProps {
@@ -72,11 +73,9 @@ export function DocsShell({ children }: DocsShellProps) {
       <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur-xl dark:border-white/10 dark:bg-[#000C22]/90">
         <div className="mx-auto flex h-20 max-w-[1440px] items-center gap-3 px-4 sm:px-6">
           <Link href="/kopoPayDocs" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-action-button text-white shadow-sm">
-              <span className="text-sm font-bold">K</span>
-            </div>
+            <BrandLogo priority size={38} showLabel={false} />
             <div className="leading-tight">
-              <p className="text-sm font-semibold text-[#000C22] dark:text-white">Kopo pay Docs</p>
+              <p className="text-sm font-semibold text-[#000C22] dark:text-white">Kopo Pay Docs</p>
               <p className="text-[11px] text-[#000C22]/50 dark:text-[#D8F4F7]/45">Clean docs for product and API guides</p>
             </div>
           </Link>

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function LegacyProfileSettingsPage() {
-  redirect("/dashboard/settings/personal/details");
+  redirect("/dashboard/settings/personal/verification");
 }

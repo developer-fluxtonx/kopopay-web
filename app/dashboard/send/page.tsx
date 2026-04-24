@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { Button } from "@/components/atoms/Button";
 import { Input } from "@/components/atoms/Input";
+import { KycRequirementGate } from "@/components/kyc/KycRequirementGate";
+import { KycStatusBadge } from "@/components/kyc/KycStatusBadge";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle2, ArrowRight, User, DollarSign } from "lucide-react";
+import { Send, CheckCircle2, ArrowRight } from "lucide-react";
+import { isKycVerified } from "@/lib/kyc";
+import { useAuthStore } from "@/store/authStore";
 
 const recentRecipients = [
   { name: "Sarah Johnson", email: "sarah@example.com", avatar: "S" },
@@ -14,10 +18,12 @@ const recentRecipients = [
 ];
 
 export default function SendMoneyPage() {
+  const user = useAuthStore((state) => state.user);
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const isVerifiedForTransfers = isKycVerified(user?.kyc);
 
   const handleSend = () => {
     setIsProcessing(true);
@@ -27,10 +33,28 @@ export default function SendMoneyPage() {
     }, 2000);
   };
 
+  if (!isVerifiedForTransfers) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-6">
+        <ScrollReveal direction="top">
+          <h1 className="text-2xl font-bold text-[#000C22] dark:text-white mb-2">Send Money</h1>
+          <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium">
+            Transfers stay locked until the account holder completes profile verification.
+          </p>
+        </ScrollReveal>
+
+        <KycRequirementGate featureName="send money" profile={user?.kyc} />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-xl mx-auto">
       <ScrollReveal direction="top">
-        <h1 className="text-2xl font-bold text-[#000C22] dark:text-white mb-2">Send Money</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-2">
+          <h1 className="text-2xl font-bold text-[#000C22] dark:text-white">Send Money</h1>
+          <KycStatusBadge profile={user?.kyc} />
+        </div>
         <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium mb-8">Transfer funds to anyone, anywhere, instantly.</p>
       </ScrollReveal>
 

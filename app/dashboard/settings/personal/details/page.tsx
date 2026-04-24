@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { 
   SettingsPanel, 
   SettingsField, 
@@ -9,11 +10,9 @@ import {
 } from "@/components/templates/SettingsLayout";
 import { Button } from "@/components/atoms/Button";
 import { User, Mail, Shield, Smartphone, Key } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function PersonalDetailsPage() {
   const [twoFactor, setTwoFactor] = useState(true);
-  const [emailNotifications, setEmailNotifications] = useState(true);
 
   return (
     <div className="space-y-6">
@@ -85,7 +84,12 @@ export default function PersonalDetailsPage() {
                 <p className="text-xs text-[#000C22]/50 dark:text-white/40">Last changed 3 months ago</p>
               </div>
             </div>
-            <Button variant="secondary" className="text-xs px-4 py-2">Change password</Button>
+            <Link
+              href="/dashboard/settings/personal/password"
+              className="inline-flex items-center justify-center rounded-xl bg-[#D8F4F7] px-4 py-2 text-xs font-medium text-[#000C22] transition-colors hover:bg-[#DCFCFF]"
+            >
+              Change password
+            </Link>
           </div>
 
           <SettingsToggleRow 

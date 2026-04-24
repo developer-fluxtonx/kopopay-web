@@ -3,19 +3,20 @@
 import React from "react";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 
 export function Footer() {
   return (
-    <ScrollReveal direction="bottom">
-      <footer className="bg-gradient-primary-button py-16 px-6 relative z-20 text-white border-none">
+    <footer className="bg-[#000C22] py-16 px-6 relative z-20 text-white border-t border-white/5">
         <div className="max-w-[1280px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <ScrollReveal direction="left" delay={0.1}>
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-lg">
-                  <span className="text-[#008E96] font-bold text-lg">K</span>
-                </div>
-                <span className="text-xl font-bold tracking-tight">Kopo Pay</span>
+              <div className="mb-6">
+                <BrandLogo
+                  priority
+                  size={40}
+                  labelClassName="text-xl font-bold tracking-tight text-white"
+                />
               </div>
               <p className="text-white/70 text-sm leading-relaxed max-w-[200px]">
                 Powering the next generation of global commerce. Built for developers by developers.
@@ -63,6 +64,5 @@ export function Footer() {
           </div>
         </div>
       </footer>
-    </ScrollReveal>
   );
 }

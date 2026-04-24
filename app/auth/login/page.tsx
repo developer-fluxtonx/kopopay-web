@@ -7,6 +7,7 @@ import { AuthLayout } from "@/components/templates/AuthLayout";
 import { Form } from "@/components/molecules/Form";
 import { Input } from "@/components/atoms/Input";
 import { Button } from "@/components/atoms/Button";
+import { getStoredDemoPassword } from "@/lib/demoCredentials";
 import { useAuthStore } from "@/store/authStore";
 
 type LoginFormValues = {
@@ -15,7 +16,7 @@ type LoginFormValues = {
 };
 
 const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "test@kopopay.com";
-const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD ?? "demo-password";
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD ?? "password123";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,7 +30,9 @@ export default function LoginPage() {
     
     // Simulate API Call
     setTimeout(() => {
-      if (data.email === DEMO_EMAIL && data.password === DEMO_PASSWORD) {
+      const expectedPassword = getStoredDemoPassword(data.email);
+
+      if (data.email === DEMO_EMAIL && data.password === expectedPassword) {
         // Dummy Auth Logic
         login({
           id: "usr_dummy123",
@@ -41,7 +44,9 @@ export default function LoginPage() {
         // defer navigation to avoid dispatching before router init
         setTimeout(() => import("@/lib/safeRouter").then(({ safePush }) => safePush(router, "/auth/2fa")), 0);
       } else {
-        setError(`Invalid email or password. Use ${DEMO_EMAIL} / demo-password`);
+        setError(
+          `Invalid email or password. Use ${DEMO_EMAIL} with your latest saved demo password.`
+        );
       }
       setIsLoading(false);
     }, 1000);
@@ -76,7 +81,7 @@ export default function LoginPage() {
               </div>
               <Input 
                 type="password" 
-                placeholder="demo-password" 
+                placeholder={DEMO_PASSWORD} 
                 required 
                 {...register("password")}
               />

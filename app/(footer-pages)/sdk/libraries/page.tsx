@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { 
   Terminal, Copy, Check, Info, ArrowRight, 
-  Github, Globe, Code, Box, Layers, 
+  Globe, Code, Box, Layers, 
   ChevronRight, ExternalLink, Download, Star
 } from "lucide-react";
 import Link from "next/link";

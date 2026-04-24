@@ -10,12 +10,13 @@ const countLeafRoutes = () =>
   productSidebarSections.reduce((total, section) => total + section.items.length, 0) +
   productOperationsSection.items.length;
 
-export default function ProductSurfacePage({
+export default async function ProductSurfacePage({
   params,
 }: {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 }) {
-  const segments = params.slug ?? [];
+  const resolvedParams = await params;
+  const segments = resolvedParams.slug ?? [];
   const context = resolveProductContext(segments);
   const currentHref =
     segments.length === 0
