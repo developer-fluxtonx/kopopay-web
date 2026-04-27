@@ -32,6 +32,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { GeometricHeroSphere } from "@/components/atoms/GeometricHeroSphere";
 
 type RadarTab = "review" | "rules" | "analytics" | "blocklist";
 type DetailTab = "signals" | "network";
@@ -611,12 +612,14 @@ export default function RadarPage() {
                   <Globe className="h-5 w-5 text-[#2ACED1]" />
                 </div>
 
-                <div className="mt-6 flex h-[220px] items-center justify-center rounded-[24px] border border-white/10 bg-white/5">
-                  <div className="relative flex h-40 w-40 items-center justify-center">
+                <div className="mt-6 flex h-[260px] items-center justify-center rounded-[24px] border border-white/10 bg-white/5 relative overflow-hidden">
+                  <div className="absolute inset-0 z-0 opacity-60">
+                    <GeometricHeroSphere />
+                  </div>
+                  <div className="pointer-events-none relative z-10 flex h-40 w-40 items-center justify-center">
                     <div className="absolute inset-0 rounded-full border border-[#2ACED1]/15" />
                     <div className="absolute inset-4 rounded-full border border-[#2ACED1]/10" />
                     <div className="absolute inset-8 rounded-full border border-[#2ACED1]/10" />
-                    <MapIcon className="h-20 w-20 text-[#2ACED1]/25" />
                   </div>
                 </div>
 

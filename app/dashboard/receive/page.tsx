@@ -45,102 +45,99 @@ export default function ReceivePage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto">
-      <ScrollReveal direction="top">
-        <div className="flex flex-wrap items-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold text-[#000C22] dark:text-white">Receive Payments</h1>
+    <div className="max-w-2xl mx-auto pb-20">
+      <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#000C22] dark:text-white tracking-tight">Receive Payments</h1>
           <KycStatusBadge profile={user?.kyc} />
         </div>
-        <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium mb-8">Share your payment link or QR code to receive money from anyone.</p>
-      </ScrollReveal>
+        <p className="text-sm font-medium text-[#000C22]/50 dark:text-[#D8F4F7]/40 max-w-md">Share your secure payment link or premium QR code to orchestrate instant capital inflow from anywhere.</p>
+      </div>
 
-      {/* Payment Link Card */}
-      <ScrollReveal direction="left" delay={0.1}>
-        <motion.div
-          whileHover={{ boxShadow: "0 10px 30px rgba(42,206,209,0.12)" }}
-          className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 backdrop-blur-sm mb-6 transition-shadow"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-[#2ACED1]/10 flex items-center justify-center">
-              <Link2 className="w-5 h-5 text-[#2ACED1]" />
+      <div className="space-y-10">
+        {/* Payment Link Card */}
+        <div className="p-10 rounded-[3rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 shadow-sm hover:shadow-2xl hover:shadow-[#2ACED1]/5 transition-all duration-500 group">
+          <div className="flex items-center gap-5 mb-10">
+            <div className="w-14 h-14 rounded-2xl bg-[#2ACED1]/10 flex items-center justify-center text-[#2ACED1] group-hover:scale-110 transition-transform">
+              <Link2 className="w-7 h-7" />
             </div>
             <div>
-              <h3 className="font-bold text-[#000C22] dark:text-white">Your Payment Link</h3>
-              <p className="text-xs text-[#000C22]/50 dark:text-[#D8F4F7]/50">Share this link to receive payments</p>
+              <h3 className="font-bold text-xl text-[#000C22] dark:text-white tracking-tight">Direct Asset Link</h3>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000C22]/30 dark:text-white/20 mt-1">Universal payment endpoint</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex-1 px-4 py-3 bg-[#F2FCFC] dark:bg-[#000C22]/60 rounded-xl border border-[#2ACED1]/20 text-sm font-mono text-[#000C22]/80 dark:text-[#D8F4F7]/80 truncate">
+          
+          <div className="flex items-center gap-3">
+            <div className="flex-1 px-6 py-5 bg-black/[0.03] dark:bg-black/20 rounded-[1.5rem] border border-black/5 dark:border-white/5 text-xs font-mono font-bold text-[#000C22]/80 dark:text-[#2ACED1] truncate">
               {paymentLink}
             </div>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={handleCopy}
-              className="p-3 rounded-xl bg-[#2ACED1]/10 hover:bg-[#2ACED1]/20 border border-[#2ACED1]/20 transition-colors"
+              className="p-5 rounded-[1.5rem] bg-[#2ACED1] text-white shadow-lg shadow-[#2ACED1]/20 hover:opacity-90 active:scale-95 transition-all shrink-0"
             >
-              {copied ? <Check className="w-5 h-5 text-emerald-500" /> : <Copy className="w-5 h-5 text-[#2ACED1]" />}
-            </motion.button>
+              {copied ? <Check className="w-6 h-6 stroke-[3]" /> : <Copy className="w-6 h-6 stroke-[3]" />}
+            </button>
           </div>
-        </motion.div>
-      </ScrollReveal>
-
-      {/* QR Code Card */}
-      <ScrollReveal direction="right" delay={0.2}>
-        <motion.div
-          whileHover={{ boxShadow: "0 10px 30px rgba(42,206,209,0.12)" }}
-          className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 backdrop-blur-sm mb-6 transition-shadow"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-[#034E78]/10 flex items-center justify-center">
-              <QrCode className="w-5 h-5 text-[#034E78] dark:text-[#D8F4F7]" />
-            </div>
-            <div>
-              <h3 className="font-bold text-[#000C22] dark:text-white">QR Code</h3>
-              <p className="text-xs text-[#000C22]/50 dark:text-[#D8F4F7]/50">Let customers scan to pay</p>
-            </div>
-          </div>
-          
-          {/* Simulated QR code using CSS grid */}
-          <div className="flex justify-center mb-6">
-            <div className="w-48 h-48 bg-white dark:bg-[#000C22] rounded-2xl border-2 border-[#2ACED1]/30 p-4 flex items-center justify-center relative shadow-[0_0_30px_rgba(42,206,209,0.1)]">
-              {/* 8x8 grid simulating a QR code */}
-              <div className="grid grid-cols-8 gap-[3px] w-full h-full">
-                {Array.from({ length: 64 }, (_, i) => {
-                  const isBlack = qrPatternIndices.includes(i);
-                  return (
-                    <div key={i} className={`rounded-[2px] ${isBlack ? "bg-[#000C22] dark:bg-[#2ACED1]" : "bg-transparent"}`} />
-                  );
-                })}
-              </div>
-              {/* Center logo */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#031322]/95 p-1 shadow-md">
-                  <BrandLogo size={30} showLabel={false} />
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <Button variant="secondary" className="w-full rounded-xl border-[#2ACED1]/20 hover:border-[#2ACED1] gap-2">
-            <Download className="w-4 h-4" /> Download QR Code
-          </Button>
-        </motion.div>
-      </ScrollReveal>
-
-      {/* Stats */}
-      <ScrollReveal direction="bottom" delay={0.3}>
-        <div className="grid grid-cols-2 gap-4">
-          <motion.div whileHover={{ y: -3 }} className="p-5 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 text-center">
-            <p className="text-2xl font-bold text-[#000C22] dark:text-white">$8,420</p>
-            <p className="text-xs font-medium text-[#000C22]/50 dark:text-[#D8F4F7]/50 mt-1 uppercase tracking-wider">Received this month</p>
-          </motion.div>
-          <motion.div whileHover={{ y: -3 }} className="p-5 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 text-center">
-            <p className="text-2xl font-bold text-[#000C22] dark:text-white">47</p>
-            <p className="text-xs font-medium text-[#000C22]/50 dark:text-[#D8F4F7]/50 mt-1 uppercase tracking-wider">Payments received</p>
-          </motion.div>
         </div>
-      </ScrollReveal>
+
+        {/* QR Code Card */}
+        <div className="p-10 rounded-[3rem] bg-[#000C22] border border-[#2ACED1]/20 shadow-2xl relative overflow-hidden group">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#2ACED1]/5 blur-[100px] pointer-events-none" />
+          
+          <div className="flex items-center justify-between mb-12 relative z-10">
+            <div className="flex items-center gap-5">
+              <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-[#2ACED1]">
+                <QrCode className="w-7 h-7" />
+              </div>
+              <div>
+                <h3 className="font-bold text-xl text-white tracking-tight">Express Checkout QR</h3>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mt-1">Scan for biometric relay</p>
+              </div>
+            </div>
+            <button className="p-4 rounded-xl bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all">
+               <Download className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div className="flex justify-center mb-12 relative z-10">
+            <div className="relative p-2 bg-gradient-to-br from-[#2ACED1]/40 to-transparent rounded-[2.5rem] group-hover:scale-105 transition-transform duration-500">
+               <div className="w-56 h-56 bg-white dark:bg-[#000C22] rounded-[2rem] border border-[#2ACED1]/30 p-6 flex items-center justify-center relative shadow-2xl">
+                 <div className="grid grid-cols-8 gap-1.5 w-full h-full opacity-90">
+                   {Array.from({ length: 64 }, (_, i) => {
+                     const isBlack = qrPatternIndices.includes(i);
+                     return (
+                       <div key={i} className={`rounded-[2px] ${isBlack ? "bg-[#000C22] dark:bg-[#2ACED1]" : "bg-transparent"}`} />
+                     );
+                   })}
+                 </div>
+                 <div className="absolute inset-0 flex items-center justify-center">
+                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#031322] border border-white/10 shadow-2xl shadow-black/50">
+                     <BrandLogo size={36} showLabel={false} />
+                   </div>
+                 </div>
+               </div>
+            </div>
+          </div>
+          
+          <button className="w-full py-5 rounded-[2rem] bg-white text-[#000C22] text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-[#2ACED1] hover:text-white active:scale-95 shadow-xl shadow-black/20 relative z-10">
+            Export High-Res Identifier
+          </button>
+        </div>
+
+        {/* Dynamic Analytics */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {[
+            { label: "Maturity Volume", value: "$8,420", color: "text-[#2ACED1]" },
+            { label: "Collection Pulse", value: "47 Txns", color: "text-emerald-500" },
+          ].map((stat, i) => (
+            <div key={i} className="p-8 rounded-[2.5rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 text-center shadow-sm">
+              <p className={`text-3xl font-bold ${stat.color} tracking-tighter`}>{stat.value}</p>
+              <p className="text-[9px] font-bold text-[#000C22]/30 dark:text-white/20 mt-2 uppercase tracking-[0.2em]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

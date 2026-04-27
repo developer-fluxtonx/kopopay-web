@@ -58,6 +58,8 @@ export interface Payout {
 
 export interface DashboardStats {
   revenue: number;
+  availableBalance: number;
+  pendingBalance: number;
   transactions: number;
   customers: number;
   processingTime: number;

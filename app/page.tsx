@@ -5,6 +5,7 @@ import { Navbar } from "@/components/organisms/Navbar";
 import { HeroBackground } from "@/components/organisms/HeroBackground";
 import { ScrollReveal } from "@/components/atoms/ScrollReveal";
 import { InteractiveLightRays } from "@/components/atoms/InteractiveLightRays";
+import { GeometricHeroSphere } from "@/components/atoms/GeometricHeroSphere";
 import { AnimatedGlobe } from "@/components/atoms/AnimatedGlobe";
 import { ScrollProgressReveal } from "@/components/atoms/ScrollProgressReveal";
 import { Button } from "@/components/atoms/Button";
@@ -71,9 +72,10 @@ export default function LandingPage() {
           opacityRange={[0, 0.7, 1, 1]} 
           opacityOutput={[1, 1, 0, 0]}
           yRange={[0, 0, 1, 1]}
-          className="max-w-[1280px] w-full mx-auto relative z-20 flex flex-col md:flex-row items-center pointer-events-none"
+          className="max-w-[1280px] w-full mx-auto relative z-20 flex flex-col lg:flex-row items-center pointer-events-none"
         >
-          <div className="w-full md:w-[60%] flex flex-col items-start text-left pointer-events-auto">
+          {/* Left Column (Text) */}
+          <div className="w-full lg:w-1/2 flex flex-col items-start text-left pointer-events-auto mb-12 lg:mb-0">
             <motion.div variants={fadeUp} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#14A9AE]/10 dark:bg-black/40 backdrop-blur-md border border-[#2ACED1]/30 mb-8 shadow-sm">
                 <span className="flex h-2 w-2 rounded-full bg-[#2ACED1] animate-pulse"></span>
@@ -120,6 +122,11 @@ export default function LandingPage() {
                 Sign up with Google
               </Button>
             </motion.div>
+          </div>
+
+          {/* Right Column (3D Sphere) */}
+          <div className="w-full lg:w-1/2 flex items-center justify-center pointer-events-auto relative">
+             <GeometricHeroSphere />
           </div>
         </ScrollProgressReveal>
       </section>

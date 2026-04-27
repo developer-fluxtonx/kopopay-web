@@ -46,135 +46,153 @@ export default function BalancesPage() {
   const displayedPayouts = payoutsFetched ?? [];
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10 pb-20">
       {/* ─── Header ─── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <ScrollReveal direction="left">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#000C22] dark:text-white mb-1">Balances</h1>
-            <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium">Manage your earnings and payout schedules.</p>
-          </div>
-        </ScrollReveal>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#000C22] dark:text-white mb-2 tracking-tight">Financial Treasury</h1>
+          <p className="text-sm font-medium text-[#000C22]/50 dark:text-[#D8F4F7]/50">Real-time breakdown of your capital, pending settlements, and global payout status.</p>
+        </div>
         
-        <ScrollReveal direction="right">
-          <motion.button
-            whileHover={{ y: -2, boxShadow: "0 8px 25px rgba(42,206,209,0.3)" }}
-            whileTap={{ scale: 0.97 }}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-[#011B3B] border border-[#2ACED1] text-[#008E96] dark:text-[#2ACED1] font-bold transition-all duration-200"
-          >
-            Pay out now
-            <ArrowUpRight className="w-5 h-5" />
-          </motion.button>
-        </ScrollReveal>
+        <div className="flex items-center gap-3">
+           <button className="px-6 py-3 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] text-[#000C22] dark:text-white font-bold text-[10px] uppercase tracking-widest transition-all hover:bg-black/[0.05] dark:hover:bg-white/[0.05]">
+             Treasury Settings
+           </button>
+           <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#2ACED1] text-white font-bold text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-[#2ACED1]/20 active:scale-95">
+             Transfer Funds
+             <ArrowUpRight className="w-4 h-4" />
+           </button>
+        </div>
       </div>
 
       {/* ─── Main Balance Overview ─── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ScrollReveal direction="left">
-          <motion.div
-            whileHover={{ y: -4, boxShadow: "0 20px 40px rgba(42,206,209,0.1)" }}
-            className="p-8 rounded-3xl bg-gradient-to-br from-[#011B3B] to-[#000C22] border border-[#2ACED1]/30 relative overflow-hidden h-full min-h-[240px] flex flex-col justify-between"
-          >
-            {/* Background Accent */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#2ACED1] opacity-5 blur-[100px] pointer-events-none"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div className="lg:col-span-2">
+          <div className="p-12 rounded-[3rem] bg-gradient-to-br from-[#011B3B] to-[#000C22] border border-[#2ACED1]/30 relative overflow-hidden h-full flex flex-col justify-between shadow-2xl shadow-[#2ACED1]/5">
+            <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
+               <Wallet className="w-56 h-56 text-[#2ACED1]" />
+            </div>
             
-            <div className="flex items-start justify-between relative">
-              <div>
-                <p className="text-[#D8F4F7]/50 font-semibold text-sm mb-2 uppercase tracking-widest">Available to pay out</p>
-                <div className="text-5xl font-bold text-white tracking-tight">
-                  <DashCounter target={balance?.available ?? 42580} prefix="$" />
-                </div>
-              </div>
-              <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10">
-                <Wallet className="w-7 h-7 text-[#2ACED1]" />
-              </div>
+            <div className="relative z-10">
+               <div className="flex items-center gap-3 mb-8">
+                  <div className="h-2 w-2 rounded-full bg-[#2ACED1] animate-pulse shadow-[0_0_8px_rgba(42,206,209,0.5)]" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#2ACED1]/80">Vault Liquidity</span>
+               </div>
+               <h2 className="text-6xl font-bold text-white tracking-tighter mb-6">
+                 <DashCounter target={balance?.available ?? 42580} prefix="$" />
+               </h2>
+               <div className="flex flex-wrap items-center gap-8">
+                  <div className="flex items-center gap-2.5 text-white/50 text-[10px] font-bold uppercase tracking-widest">
+                     <CheckCircle2 className="w-4 h-4 text-[#2ACED1]" />
+                     Instant Settlement Ready
+                  </div>
+                  <div className="flex items-center gap-2.5 text-white/50 text-[10px] font-bold uppercase tracking-widest">
+                     <Building2 className="w-4 h-4 text-[#2ACED1]" />
+                     Verified Bank: •••• 9012
+                  </div>
+               </div>
             </div>
 
-            <div className="flex items-center gap-4 mt-8 relative">
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">
-                <TrendingUp className="w-3 h-3" />
-                +14% from last week
-              </div>
-              <p className="text-white/40 text-xs font-medium">Auto-payout scheduled for Tomorrow</p>
+            <div className="mt-16 p-8 rounded-3xl bg-white/[0.03] border border-white/5 backdrop-blur-xl flex items-center justify-between relative z-10">
+               <div>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2">Cycle Horizon</p>
+                  <p className="text-sm font-bold text-white tracking-tight">Next Payout: April 28</p>
+               </div>
+               <div className="h-10 w-px bg-white/10" />
+               <div>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 mb-2">Estimated Yield</p>
+                  <p className="text-sm font-bold text-[#2ACED1] tracking-tight">$3,420.00</p>
+               </div>
+               <button className="w-12 h-12 rounded-2xl bg-[#2ACED1]/10 text-[#2ACED1] flex items-center justify-center hover:bg-[#2ACED1]/20 transition-all active:scale-90">
+                  <ExternalLink className="w-5 h-5" />
+               </button>
             </div>
-          </motion.div>
-        </ScrollReveal>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
-          {[
-            { label: "Pending Balance", value: 8940, prefix: "$", icon: "Clock", color: "#F59E0B" },
-            { label: "On the way", value: 12450, prefix: "$", icon: "Building2", color: "#2ACED1" },
-            { label: "Reserve", value: 2500, prefix: "$", icon: "AlertCircle", color: "#6B7280" },
-            { label: "Gross volume (YTD)", value: 452800, prefix: "$", icon: "DollarSign", color: "#10B981" },
-          ].map((item, i) => (
-            <ScrollReveal key={i} direction="bottom" delay={0.1 + i * 0.1}>
-              <motion.div
-                whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}
-                className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/10 flex flex-col justify-between gap-4 h-full"
-              >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-black/5 dark:bg-white/5" style={{ color: item.color }}>
-                  {(() => {
-                    const Icon = getIcon(item.icon as string);
-                    return <Icon className="w-5 h-5" />;
-                  })()}
+        <div className="space-y-10">
+           {[
+             { label: "Pending Reserve", value: 8940, prefix: "$", icon: "Clock", color: "#F59E0B", desc: "Settling in 2.5 days" },
+             { label: "Stability Buffer", value: 2500, prefix: "$", icon: "Shield", color: "#6B7280", desc: "Escrowed protection" },
+           ].map((item, i) => (
+             <div
+               key={i}
+               className="p-10 rounded-[3rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 flex flex-col justify-between h-[calc(50%-20px)] shadow-sm hover:border-[#2ACED1]/20 transition-all duration-500"
+             >
+                <div className="flex items-center justify-between mb-6">
+                   <div className="p-4 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03]" style={{ color: item.color }}>
+                      {(() => {
+                        const Icon = getIcon(item.icon as string);
+                        return <Icon className="w-6 h-6" />;
+                      })()}
+                   </div>
+                   <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: item.color }} />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#000C22]/40 dark:text-[#D8F4F7]/40 uppercase tracking-wider mb-1">{item.label}</p>
-                  <p className="text-xl font-bold text-[#000C22] dark:text-white">
-                    <DashCounter target={item.value} prefix={item.prefix} />
-                  </p>
+                   <p className="text-[10px] font-bold text-[#000C22]/30 dark:text-white/20 uppercase tracking-[0.2em] mb-2">{item.label}</p>
+                   <p className="text-3xl font-bold text-[#000C22] dark:text-white mb-2 tracking-tight">
+                      <DashCounter target={item.value} prefix={item.prefix} />
+                   </p>
+                   <p className="text-[10px] font-medium text-[#000C22]/40 dark:text-white/30">{item.desc}</p>
                 </div>
-              </motion.div>
-            </ScrollReveal>
-          ))}
+             </div>
+           ))}
         </div>
       </div>
 
       {/* ─── Payouts History ─── */}
-      <ScrollReveal direction="bottom" delay={0.3}>
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-[#000C22] dark:text-white">Payout History</h3>
-            <button className="text-sm font-bold text-[#008E96] dark:text-[#2ACED1] hover:underline flex items-center gap-1 transition-all">
-              View all
-              <ExternalLink className="w-4 h-4" />
-            </button>
+      <div className="flex flex-col gap-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-[#000C22] dark:text-white tracking-tight">Settlement Records</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#000C22]/30 dark:text-white/30 mt-1">Audit log of all outbound transfers</p>
           </div>
-
-          <div className="grid grid-cols-1 gap-3">
-            {displayedPayouts.map((pay, i) => (
-              <motion.div
-                key={pay.id}
-                whileHover={{ scale: 1.01, backgroundColor: "rgba(42,206,209,0.05)" }}
-                className="p-5 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/10 flex flex-wrap items-center justify-between gap-4 transition-all duration-200"
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    pay.status === "Paid" ? "bg-emerald-500/10 text-emerald-500" : "bg-cyan-500/10 text-cyan-500"
-                  }`}>
-                    {pay.status === "Paid" ? <CheckCircle2 className="w-6 h-6" /> : <Building2 className="w-6 h-6" />}
-                  </div>
-                  <div>
-                    <p className="font-bold text-[#000C22] dark:text-white">{pay.bank}</p>
-                    <p className="text-xs font-medium text-[#000C22]/40 dark:text-[#D8F4F7]/40">{pay.date} • {pay.id}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-8">
-                  <div className="text-right">
-                    <p className="font-bold text-[#000C22] dark:text-white">{pay.amount}</p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    pay.status === "Paid" ? "bg-emerald-500/10 text-emerald-500" : "bg-cyan-500/10 text-cyan-500"
-                  }`}>
-                    {pay.status}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+          <div className="flex items-center gap-3">
+             <button className="px-5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] text-[10px] font-bold uppercase tracking-widest text-[#000C22]/50 dark:text-white/40">Filters</button>
+             <button className="px-5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] text-[10px] font-bold uppercase tracking-widest text-[#000C22]/50 dark:text-white/40">Export</button>
           </div>
         </div>
-      </ScrollReveal>
+
+        <div className="bg-white dark:bg-[#011B3B] rounded-[2.5rem] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+               <thead>
+                  <tr className="border-b border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
+                     <th className="px-10 py-6 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/20">Ref ID</th>
+                     <th className="px-10 py-6 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/20">Maturity Date</th>
+                     <th className="px-10 py-6 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/20">Destination</th>
+                     <th className="px-10 py-6 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/20">Gross Amount</th>
+                     <th className="px-10 py-6 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/20 text-right">Status</th>
+                  </tr>
+               </thead>
+               <tbody className="divide-y divide-black/5 dark:divide-white/5">
+                  {displayedPayouts.map((pay) => (
+                    <tr key={pay.id} className="hover:bg-[#2ACED1]/5 transition-all group cursor-pointer">
+                       <td className="px-10 py-8 text-xs font-bold text-[#000C22] dark:text-white/90 font-mono">{pay.id}</td>
+                       <td className="px-10 py-8 text-xs font-medium text-[#000C22]/60 dark:text-white/40">{pay.date}</td>
+                       <td className="px-10 py-8">
+                          <div className="flex items-center gap-4">
+                             <div className="w-10 h-10 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] flex items-center justify-center text-[#2ACED1]">
+                                <Building2 className="w-5 h-5" />
+                             </div>
+                             <span className="text-xs font-bold text-[#000C22] dark:text-white/90">{pay.bank}</span>
+                          </div>
+                       </td>
+                       <td className="px-10 py-8 text-xs font-bold text-[#000C22] dark:text-white/90">{pay.amount}</td>
+                       <td className="px-10 py-8 text-right">
+                          <span className={`px-4 py-1.5 rounded-xl text-[9px] font-bold uppercase tracking-widest ${
+                            pay.status === "Paid" ? "bg-emerald-500/10 text-emerald-500" : "bg-cyan-500/10 text-cyan-500"
+                          }`}>
+                            {pay.status}
+                          </span>
+                       </td>
+                    </tr>
+                  ))}
+               </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

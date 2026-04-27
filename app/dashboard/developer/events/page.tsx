@@ -12,6 +12,9 @@ import {
    Circle,
    ArrowRight,
    CheckCircle2,
+   Activity,
+   X,
+   Clock
 } from "lucide-react";
 import { getIcon } from "@/components/IconRegistry";
 
@@ -72,162 +75,149 @@ export default function EventLogsPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <ScrollReveal direction="left">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#000C22] dark:text-white mb-1">Event Logs</h1>
-            <p className="text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium">Monitor API events and webhook deliveries in real-time.</p>
-          </div>
-          <div className="flex items-center gap-3">
-             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <Circle className="w-2.5 h-2.5 text-emerald-500 fill-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-500">Live API</span>
-             </div>
-          </div>
+    <div className="flex flex-col gap-10 pb-20">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#000C22] dark:text-white mb-2 tracking-tight">Event Stream</h1>
+          <p className="text-sm font-medium text-[#000C22]/50 dark:text-[#D8F4F7]/50">A comprehensive history of all API activity and state changes in your workspace.</p>
         </div>
-      </ScrollReveal>
+        <div className="flex items-center gap-3">
+           <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/10">
+              <Circle className="w-2 h-2 text-emerald-500 fill-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Streaming Live</span>
+           </div>
+        </div>
+      </div>
 
       {/* ─── Top Stats ─── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
          {[
-            { label: "Total Events (24h)", value: "14,285", icon: "Activity", color: "#2ACED1" },
-            { label: "Webhook Delivery Rate", value: "99.98%", icon: "Server", color: "#10B981" },
-            { label: "Avg Response Time", value: "142ms", icon: "Clock", color: "#034E78" },
+            { label: "Total Events (24h)", value: "14,285", icon: Activity, color: "#2ACED1" },
+            { label: "Webhook Success", value: "99.98%", icon: CheckCircle2, color: "#10B981" },
+            { label: "Avg Latency", value: "142ms", icon: Clock, color: "#034E78" },
          ].map((stat, i) => (
-            <ScrollReveal key={i} direction="bottom" delay={i * 0.1}>
-               <motion.div 
-                  whileHover={{ y: -4 }}
-                  className="p-5 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 flex items-center justify-between transition-all shadow-sm hover:shadow-md"
-               >
-                  <div>
-                     <p className="text-xs font-bold uppercase tracking-widest text-[#000C22]/40 dark:text-[#D8F4F7]/40 mb-1">{stat.label}</p>
-                     <p className="text-2xl font-bold text-[#000C22] dark:text-white">{stat.value}</p>
-                  </div>
-                               <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-black/5 dark:bg-white/5" style={{ color: stat.color }}>
-                                  {(() => {
-                                     const Icon = getIcon(stat.icon as string);
-                                     return <Icon className="w-5 h-5" />;
-                                  })()}
-                           </div>
-               </motion.div>
-            </ScrollReveal>
+            <div key={i} className="p-6 rounded-[2rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 shadow-sm">
+               <div className="flex items-center justify-between mb-3">
+                  <p className="text-[10px] font-bold text-[#000C22]/30 dark:text-white/30 uppercase tracking-[0.2em]">{stat.label}</p>
+                  <stat.icon className="w-4 h-4 text-[#2ACED1]/30" />
+               </div>
+               <p className="text-2xl font-bold text-[#000C22] dark:text-white tracking-tight">{stat.value}</p>
+            </div>
          ))}
       </div>
 
       {/* ─── Controls ─── */}
-      <ScrollReveal direction="bottom" delay={0.2}>
-         <div className="flex flex-wrap items-center gap-3 bg-white/50 dark:bg-[#011B3B]/50 p-4 rounded-xl border border-[#2ACED1]/10 backdrop-blur-sm">
-            <div className="relative flex-1 min-w-[240px]">
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#000C22]/40 dark:text-[#D8F4F7]/40" />
-               <input 
-                 type="text" 
-                 placeholder="Search events by ID, type, or resource..." 
-                 className="w-full pl-10 pr-4 py-2 font-mono text-sm rounded-lg bg-white dark:bg-[#000C22] border border-[#2ACED1]/20 focus:outline-none focus:border-[#2ACED1] transition-colors"
-               />
-            </div>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[#2ACED1]/20 hover:bg-[#2ACED1]/5 transition-colors text-sm font-semibold">
-               <Filter className="w-4 h-4" /> Filters
-            </button>
-            <button className="p-2 rounded-lg border border-[#2ACED1]/20 hover:bg-[#2ACED1]/5 transition-colors text-sm font-semibold">
-               <RefreshCw className="w-4 h-4" />
-            </button>
+      <div className="flex flex-wrap items-center gap-4 bg-black/[0.02] dark:bg-white/[0.02] p-6 rounded-[2rem] border border-black/5 dark:border-white/5">
+         <div className="relative flex-1 min-w-[280px]">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#2ACED1]" />
+            <input 
+              type="text" 
+              placeholder="Filter by event type, ID, or resource..." 
+              className="w-full pl-12 pr-4 py-3 text-xs font-bold rounded-2xl bg-white dark:bg-[#000C22] border-none outline-none ring-1 ring-black/5 dark:ring-white/5 focus:ring-[#2ACED1]/50 transition-all shadow-sm"
+            />
          </div>
-      </ScrollReveal>
+         <button className="px-6 py-3 rounded-xl bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/40 dark:text-white/40 shadow-sm">
+            Filters
+         </button>
+         <button className="p-3 rounded-xl bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 text-[#2ACED1] shadow-sm">
+            <RefreshCw className="w-4 h-4" />
+         </button>
+      </div>
 
       {/* ─── Event Stream Table ─── */}
-      <ScrollReveal direction="bottom" delay={0.3}>
-         <div className="rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 overflow-hidden shadow-sm">
-            <div className="overflow-x-auto">
-               <table className="w-full text-left border-collapse">
-                  <thead>
-                     <tr className="border-b border-[#000C22]/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
-                        <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#000C22]/40 dark:text-[#D8F4F7]/40 w-48">Event Type</th>
-                        <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#000C22]/40 dark:text-[#D8F4F7]/40">Event ID</th>
-                        <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#000C22]/40 dark:text-[#D8F4F7]/40">Resource ID</th>
-                        <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#000C22]/40 dark:text-[#D8F4F7]/40">Status</th>
-                        <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#000C22]/40 dark:text-[#D8F4F7]/40 text-right">Created</th>
+      <div className="rounded-[2.5rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm">
+         <div className="overflow-x-auto">
+            <table className="w-full text-left">
+               <thead>
+                  <tr className="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
+                     <th className="px-10 py-5 text-[9px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/30">Event Type</th>
+                     <th className="px-10 py-5 text-[9px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/30">Event ID</th>
+                     <th className="px-10 py-5 text-[9px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/30">Resource</th>
+                     <th className="px-10 py-5 text-[9px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/30">Status</th>
+                     <th className="px-10 py-5 text-[9px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/30 text-right">Created</th>
+                  </tr>
+               </thead>
+               <tbody className="divide-y divide-black/5 dark:divide-white/5">
+                  {events.map((evt) => (
+                     <tr 
+                        key={evt.id} 
+                        onClick={() => setSelectedEvent(evt)}
+                        className="hover:bg-[#2ACED1]/5 cursor-pointer transition-colors group"
+                     >
+                        <td className="px-10 py-6">
+                           <span className="text-xs font-bold text-[#000C22] dark:text-white/90 group-hover:text-[#2ACED1] transition-colors">{evt.type}</span>
+                        </td>
+                        <td className="px-10 py-6 font-mono text-[10px] font-bold text-[#000C22]/30 dark:text-white/20">{evt.id}</td>
+                        <td className="px-10 py-6 font-mono text-[10px] font-bold text-[#000C22]/30 dark:text-white/20">{evt.resource}</td>
+                        <td className="px-10 py-6">
+                           <span className={`text-[9px] font-bold px-3 py-1 rounded-lg uppercase tracking-wider ${evt.status.includes('OK') ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
+                              {evt.status}
+                           </span>
+                        </td>
+                        <td className="px-10 py-6 text-[10px] font-bold text-[#000C22]/30 dark:text-white/20 text-right uppercase">{new Date(evt.time).toLocaleTimeString()}</td>
                      </tr>
-                  </thead>
-                  <tbody className="font-mono text-xs">
-                     {events.map((evt, i) => (
-                        <tr 
-                           key={evt.id} 
-                           onClick={() => setSelectedEvent(evt)}
-                           className="border-b border-[#000C22]/5 dark:border-white/5 hover:bg-[#2ACED1]/5 cursor-pointer transition-colors group"
-                        >
-                           <td className="px-6 py-4">
-                              <span className="font-bold text-[#000C22] dark:text-white group-hover:text-[#2ACED1] transition-colors">{evt.type}</span>
-                           </td>
-                           <td className="px-6 py-4 text-[#000C22]/70 dark:text-[#D8F4F7]/70">{evt.id}</td>
-                           <td className="px-6 py-4 text-[#000C22]/70 dark:text-[#D8F4F7]/70">{evt.resource}</td>
-                           <td className="px-6 py-4">
-                              <span className={`px-2 py-1 rounded-full ${evt.status.includes('OK') ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'}`}>
-                                 {evt.method} {evt.status}
-                              </span>
-                           </td>
-                           <td className="px-6 py-4 text-[#000C22]/50 dark:text-[#D8F4F7]/50 text-right">{new Date(evt.time).toLocaleString()}</td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
-            </div>
+                  ))}
+               </tbody>
+            </table>
          </div>
-      </ScrollReveal>
+      </div>
 
-      {/* ─── Payload Viewer Modal ─── */}
+      {/* ─── Payload Viewer Side-over ─── */}
       <AnimatePresence>
          {selectedEvent && (
-            <div className="fixed inset-0 z-50 flex items-center justify-end p-4 lg:p-6">
+            <>
                <motion.div 
                   initial={{ opacity: 0 }} 
                   animate={{ opacity: 1 }} 
                   exit={{ opacity: 0 }}
                   onClick={() => setSelectedEvent(null)}
-                  className="absolute inset-0 bg-[#000C22]/80 backdrop-blur-sm"
+                  className="fixed inset-0 z-[60] bg-[#000C22]/60 backdrop-blur-sm"
                />
                <motion.div
-                  initial={{ x: "100%", opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: "100%", opacity: 0 }}
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
                   transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                  className="relative w-full max-w-3xl h-full bg-[#000C22] border border-[#2ACED1]/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+                  className="fixed top-0 right-0 h-full w-full max-w-[700px] bg-white dark:bg-[#011B3B] shadow-2xl z-[70] border-l border-[#2ACED1]/20 flex flex-col"
                >
-                  {/* Header */}
-                  <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#011B3B]">
-                     <div className="flex items-center gap-3">
+                  <div className="p-8 border-b border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] flex items-center justify-between">
+                     <div className="flex items-center gap-4">
                         <Terminal className="w-5 h-5 text-[#2ACED1]" />
                         <div>
-                           <h3 className="font-bold text-white tracking-wide">{selectedEvent.type}</h3>
-                           <p className="font-mono text-xs text-white/50">{selectedEvent.id}</p>
+                           <h3 className="text-sm font-bold text-[#000C22] dark:text-white tracking-tight">{selectedEvent.type}</h3>
+                           <p className="font-mono text-[10px] font-bold text-[#000C22]/30 dark:text-white/20 uppercase tracking-widest">{selectedEvent.id}</p>
                         </div>
                      </div>
-                     <div className="flex items-center gap-2">
-                        <button className="p-2 rounded hover:bg-white/10 text-white/60 hover:text-white transition-colors">
-                           <Download className="w-4 h-4" />
-                        </button>
-                        <button onClick={() => setSelectedEvent(null)} className="p-2 rounded hover:bg-red-500/20 hover:text-red-500 text-white/60 transition-colors">
-                           ✕
-                        </button>
-                     </div>
+                     <button onClick={() => setSelectedEvent(null)} className="p-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-[#000C22]/40 dark:text-white/40 transition-colors">
+                        <X className="w-5 h-5" />
+                     </button>
                   </div>
 
-                  {/* Body (JSON Config) */}
-                  <div className="flex-1 overflow-auto bg-[#000C22] p-6 custom-scrollbar text-sm font-mono leading-relaxed">
-                     <pre className="text-white/80">
+                  <div className="flex-1 overflow-auto bg-[#000C22] p-10 custom-scrollbar shadow-inner">
+                     <div className="flex items-center gap-2 mb-6">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#2ACED1] animate-pulse" />
+                        <span className="text-[10px] font-bold text-[#2ACED1]/60 uppercase tracking-[0.2em]">Live Payload Inspector</span>
+                     </div>
+                     <pre className="text-xs font-mono text-[#2ACED1] leading-relaxed">
                         {JSON.stringify(dummyPayload, null, 2)}
                      </pre>
                   </div>
                   
-                  {/* Footer Context */}
-                  <div className="px-6 py-3 border-t border-white/10 bg-[#011B3B] flex justify-between items-center text-xs font-mono">
-                     <span className="text-white/50">Response generated in 42ms</span>
-                     <div className="flex items-center gap-2 text-emerald-400">
-                        <CheckCircle2 className="w-4 h-4" /> Successfully delivered to 2 endpoints
+                  <div className="p-8 border-t border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] flex justify-between items-center">
+                     <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                           <CheckCircle2 className="w-4 h-4" />
+                        </div>
+                        <p className="text-[10px] font-bold text-[#000C22]/40 dark:text-white/30 uppercase tracking-widest leading-none">
+                           Successfully Delivered <br/> <span className="text-[8px] opacity-60">To 2 Webhook Endpoints</span>
+                        </p>
                      </div>
+                     <button className="px-6 py-3 rounded-xl bg-[#2ACED1] text-white font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-[#2ACED1]/20 active:scale-95 transition-all">
+                        Resend Webhook
+                     </button>
                   </div>
                </motion.div>
-            </div>
+            </>
          )}
       </AnimatePresence>
     </div>

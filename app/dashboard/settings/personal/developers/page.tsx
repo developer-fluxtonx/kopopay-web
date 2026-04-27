@@ -1,9 +1,8 @@
 "use client";
 
-import { Copy, Eye, EyeOff, Plus, Terminal, Webhook } from "lucide-react";
+import { Check, Copy, Eye, EyeOff, Plus, Terminal, Webhook } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/atoms/Button";
-import { Card } from "@/components/atoms/Card";
 import {
   SettingsPanel,
   SettingsToggleRow,
@@ -37,132 +36,196 @@ export default function DevelopersSettingsPage() {
   const testKey = "pk_test_kopo_51Hg8rK...mN3qW";
 
   return (
-    <div className="space-y-6">
-      <SettingsPanel
-        title="Developer workspace"
-        description="Workbench, API keys, webhook endpoints, and integration tools live here."
-        action={
-          <Button type="button" variant="outline" size="sm">
-            <Plus className="h-4 w-4" />
-            New endpoint
-          </Button>
-        }
-      >
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            { label: "Mode", value: liveMode ? "Live" : "Test" },
-            { label: "Keys", value: "2 visible" },
-            { label: "Endpoints", value: "2 connected" },
-            { label: "CLI", value: "Ready" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="rounded-2xl border border-black/5 bg-white/70 p-4 dark:border-white/5 dark:bg-white/5"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#000C22]/35 dark:text-[#D8F4F7]/35">
-                {item.label}
-              </p>
-              <p className="mt-3 text-lg font-bold text-[#000C22] dark:text-white">
-                {item.value}
-              </p>
-            </div>
-          ))}
-        </div>
-      </SettingsPanel>
+    <div className="space-y-10 pb-20">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-bold text-[#000C22] dark:text-white tracking-tight">Developer Workspace</h1>
+        <p className="text-sm font-medium text-[#000C22]/40 dark:text-white/40">Manage your API keys, webhooks, and local integration tools.</p>
+      </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <SettingsPanel
-          title="API keys"
-          description="Rotate, reveal, and audit keys without leaving the settings area."
-          action={
-            <Button type="button" variant="action" onClick={() => setLiveMode((value) => !value)}>
-              {liveMode ? "Switch to test" : "Switch to live"}
-            </Button>
-          }
-        >
-          <div className="space-y-3">
-            {[
-              { label: "Publishable key", value: liveMode ? liveKey : testKey, kind: "test" as const },
-              { label: "Secret key", value: liveMode ? "sk_live_kopo_..." : "sk_test_kopo_...", kind: "live" as const },
-            ].map((key) => (
-              <div
-                key={key.label}
-                className="flex flex-col gap-4 rounded-2xl border border-black/5 bg-white/70 p-4 dark:border-white/5 dark:bg-white/5 lg:flex-row lg:items-center lg:justify-between"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#000C22]/35 dark:text-[#D8F4F7]/35">
-                    {key.label}
-                  </p>
-                  <p className="mt-2 font-mono text-sm text-[#000C22] dark:text-white">
-                    {showKeys ? key.value : "••••••••••••••••••••••••"}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowKeys((value) => !value)}
-                  >
-                    {showKeys ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    {showKeys ? "Hide" : "Reveal"}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyKey(key.value, key.kind)}
-                  >
-                    <Copy className="h-4 w-4" />
-                    {copied === key.kind ? "Copied" : "Copy"}
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </SettingsPanel>
-
-        <div className="space-y-6">
-          <SettingsPanel
-            title="Workbench"
-            description="Use a compact command surface for integration checks."
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {[
+          { label: "Environment", value: liveMode ? "Live" : "Test", icon: Terminal },
+          { label: "Active Keys", value: "2 Total", icon: Plus },
+          { label: "Endpoints", value: "2 Online", icon: Webhook },
+          { label: "CLI Version", value: "v2.4.0", icon: Terminal },
+        ].map((item) => (
+          <div
+            key={item.label}
+            className="rounded-[2rem] border border-black/5 bg-white dark:border-white/5 dark:bg-[#011B3B] p-6 shadow-sm"
           >
-            <Card className="overflow-hidden border border-[#2ACED1]/15 bg-[#0D1117] text-white">
-              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-                <Terminal className="h-4 w-4 text-[#2ACED1]" />
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">
-                  cURL
-                </span>
-              </div>
-              <pre className="overflow-x-auto p-4 text-sm leading-6 text-[#D8F4F7]">
-{`curl https://api.kopopay.com/v1/payments \
-  -H "Authorization: Bearer sk_test_..." \
-  -d amount=2000 \
-  -d currency=usd \
-  -d description="Payment for order #1234"`}
-              </pre>
-            </Card>
-          </SettingsPanel>
+            <div className="flex items-center justify-between mb-4">
+               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000C22]/30 dark:text-white/20">
+                 {item.label}
+               </p>
+               <item.icon className="w-4 h-4 text-[#2ACED1]/40" />
+            </div>
+            <p className="text-xl font-bold text-[#000C22] dark:text-white tracking-tight">
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
 
+      <div className="grid gap-10 xl:grid-cols-[1fr_0.8fr]">
+        <div className="space-y-10">
           <SettingsPanel
-            title="Developer toggles"
-            description="Turn integration features on or off per environment."
+            title="Authentication Keys"
+            description="Manage your secret and publishable keys for this environment."
             action={
-              <Button type="button" variant="outline" size="sm">
-                Open developer dashboard
+              <Button type="button" variant="action" size="sm" onClick={() => setLiveMode((value) => !value)}>
+                {liveMode ? "Switch to Test Mode" : "Switch to Live Mode"}
               </Button>
             }
           >
-            <div className="space-y-3">
+            <div className="space-y-4">
+              {[
+                { label: "Publishable key", value: liveMode ? liveKey : testKey, kind: "test" as const },
+                { label: "Secret key", value: liveMode ? "sk_live_kopo_..." : "sk_test_kopo_...", kind: "live" as const },
+              ].map((key) => (
+                <div
+                  key={key.label}
+                  className="flex flex-col gap-4 rounded-[2rem] border border-black/5 bg-white dark:border-white/5 dark:bg-[#011B3B] p-6 lg:flex-row lg:items-center lg:justify-between shadow-sm group"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#000C22]/30 dark:text-white/20 mb-2">
+                      {key.label}
+                    </p>
+                    <p className="font-mono text-xs font-bold text-[#000C22] dark:text-white/90">
+                      {showKeys ? key.value : "••••••••••••••••••••••••••••••••"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setShowKeys((value) => !value)}
+                      className="p-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] text-[#000C22]/40 dark:text-white/40 hover:text-[#2ACED1] transition-all"
+                    >
+                      {showKeys ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                    <button
+                      onClick={() => copyKey(key.value, key.kind)}
+                      className="p-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] text-[#000C22]/40 dark:text-white/40 hover:text-[#2ACED1] transition-all"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SettingsPanel>
+
+          <SettingsPanel
+            title="Webhook Endpoints"
+            description="Subscribe to events occurring in your KopoPay account."
+            action={
+               <Button type="button" variant="outline" size="sm">
+                 <Plus className="h-4 w-4" /> Add Endpoint
+               </Button>
+             }
+          >
+            <div className="space-y-4">
+              {endpoints.map((endpoint) => (
+                <div
+                  key={endpoint.url}
+                  className="flex flex-col gap-4 rounded-[2rem] border border-black/5 bg-white dark:border-white/5 dark:bg-[#011B3B] p-6 lg:flex-row lg:items-center lg:justify-between shadow-sm hover:border-[#2ACED1]/20 transition-all"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#2ACED1]/5">
+                      <Webhook className="h-6 w-6 text-[#2ACED1]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[#000C22] dark:text-white/90 font-mono tracking-tight">
+                        {endpoint.url}
+                      </p>
+                      <p className="mt-1.5 text-[10px] font-bold uppercase tracking-widest text-[#000C22]/30 dark:text-white/20">
+                        {endpoint.events}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`px-4 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest ${
+                    endpoint.status === "Active" ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"
+                  }`}>
+                    {endpoint.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </SettingsPanel>
+        </div>
+
+        <div className="space-y-10">
+          <SettingsPanel
+            title="Workbench"
+            description="Compact explorer for integration health checks."
+          >
+            <div className="rounded-[2rem] bg-[#000C1A] border border-white/5 overflow-hidden shadow-xl relative group">
+              <div className="flex items-center justify-between border-b border-white/10 px-6 py-4 bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                  <Terminal className="h-4 w-4 text-[#2ACED1]" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
+                    Live Explorer
+                  </span>
+                </div>
+                <div className="flex gap-1.5">
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#FF5F56]/40" />
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#FFBD2E]/40" />
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#27C93F]/40" />
+                </div>
+              </div>
+
+              <div className="relative p-8 bg-[#000C1A]">
+                {/* Copy Button Overlay */}
+                <button 
+                  onClick={() => {
+                    const text = `curl https://api.kopopay.com/v1/payments -H "Authorization: Bearer sk_test_..." -d amount=2000 -d currency=usd -d description="Payment for order #1234"`;
+                    navigator.clipboard.writeText(text);
+                    setCopied("test");
+                    setTimeout(() => setCopied(null), 1500);
+                  }}
+                  className="absolute top-4 right-6 p-2.5 rounded-xl bg-white/5 hover:bg-[#2ACED1]/10 text-white/30 hover:text-[#2ACED1] border border-white/5 transition-all active:scale-90"
+                >
+                  {copied === "test" ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                </button>
+
+                <div className="font-mono text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-wrap break-all">
+                  <div className="flex gap-3">
+                    <span className="text-white/10 shrink-0 select-none">01</span>
+                    <p><span className="text-emerald-400 font-bold">curl</span> <span className="text-white font-medium">https://api.kopopay.com/v1/payments \</span></p>
+                  </div>
+                  <div className="flex gap-3">
+                    <span className="text-white/10 shrink-0 select-none">02</span>
+                    <p><span className="text-[#2ACED1] font-bold">  -H</span> <span className="text-amber-300 font-medium">&quot;Authorization: Bearer sk_test_...&quot;</span> <span className="text-white">\</span></p>
+                  </div>
+                  <div className="flex gap-3">
+                    <span className="text-white/10 shrink-0 select-none">03</span>
+                    <p><span className="text-[#2ACED1] font-bold">  -d</span> <span className="text-blue-400 font-medium">amount</span>=<span className="text-emerald-400">2000</span> <span className="text-white">\</span></p>
+                  </div>
+                  <div className="flex gap-3">
+                    <span className="text-white/10 shrink-0 select-none">04</span>
+                    <p><span className="text-[#2ACED1] font-bold">  -d</span> <span className="text-blue-400 font-medium">currency</span>=<span className="text-emerald-400">usd</span> <span className="text-white">\</span></p>
+                  </div>
+                  <div className="flex gap-3">
+                    <span className="text-white/10 shrink-0 select-none">05</span>
+                    <p><span className="text-[#2ACED1] font-bold">  -d</span> <span className="text-blue-400 font-medium">description</span>=<span className="text-amber-300 font-medium">&quot;Payment for order #1234&quot;</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SettingsPanel>
+
+          <SettingsPanel
+            title="Developer Toggles"
+            description="Control integration behavior per environment."
+          >
+            <div className="space-y-4">
               <SettingsToggleRow
-                title="Allow webhook retries"
-                description="Retry failed webhook deliveries with a backoff schedule."
+                title="Webhook Retries"
+                description="Automatic backoff for failed events."
                 checked
                 onToggle={() => undefined}
               />
               <SettingsToggleRow
-                title="Lock production keys"
-                description="Require a second confirmation before changing live keys."
+                title="Production Safety"
+                description="Require confirmation for live key edits."
                 checked
                 onToggle={() => undefined}
               />
@@ -170,37 +233,6 @@ export default function DevelopersSettingsPage() {
           </SettingsPanel>
         </div>
       </div>
-
-      <SettingsPanel
-        title="Webhook endpoints"
-        description="Keep your event subscriptions organized and easy to audit."
-      >
-        <div className="space-y-3">
-          {endpoints.map((endpoint) => (
-            <div
-              key={endpoint.url}
-              className="flex flex-col gap-3 rounded-2xl border border-black/5 bg-white/70 p-4 dark:border-white/5 dark:bg-white/5 lg:flex-row lg:items-center lg:justify-between"
-            >
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#2ACED1]/10">
-                  <Webhook className="h-5 w-5 text-[#2ACED1]" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-[#000C22] dark:text-white">
-                    {endpoint.url}
-                  </p>
-                  <p className="mt-1 text-xs leading-5 text-[#000C22]/55 dark:text-[#D8F4F7]/55">
-                    {endpoint.events}
-                  </p>
-                </div>
-              </div>
-              <span className="rounded-full bg-[#2ACED1]/10 px-3 py-1 text-xs font-semibold text-[#008E96]">
-                {endpoint.status}
-              </span>
-            </div>
-          ))}
-        </div>
-      </SettingsPanel>
     </div>
   );
 }

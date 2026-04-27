@@ -36,79 +36,90 @@ export default function CustomersPage() {
   );
 
   return (
-    <div>
-      <ScrollReveal direction="left">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-[#000C22] dark:text-white">Customers</h1>
-            <p className="text-sm text-[#000C22]/60 dark:text-[#D8F4F7]/60 font-medium">Manage your customer relationships and payment history.</p>
-          </div>
-          <ScrollReveal direction="right" delay={0.1}>
-            <motion.button
-              whileHover={{ y: -2, boxShadow: "0 6px 20px rgba(42,206,209,0.15)" }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2ACED1] to-[#008E96] text-white text-sm font-semibold shadow-[0_4px_15px_rgba(42,206,209,0.3)] hover:shadow-[0_8px_25px_rgba(42,206,209,0.4)] transition-all"
-            >
-              <Plus className="w-4 h-4" /> Add Customer
-            </motion.button>
-          </ScrollReveal>
+    <div className="flex flex-col gap-10 pb-20">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#000C22] dark:text-white mb-2 tracking-tight">Customer CRM</h1>
+          <p className="text-sm font-medium text-[#000C22]/50 dark:text-[#D8F4F7]/50">Strategic insights and lifecycle management for your global customer base.</p>
         </div>
-      </ScrollReveal>
+        <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#2ACED1] text-white font-bold text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-[#2ACED1]/20 active:scale-95">
+           <Plus className="w-4 h-4" /> Register Customer
+        </button>
+      </div>
 
-      {/* Search */}
-      <ScrollReveal direction="top" delay={0.1}>
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#000C22]/40 dark:text-[#D8F4F7]/40" />
+      {/* Search & Filters */}
+      <div className="relative group">
+        <div className="absolute inset-0 bg-[#2ACED1]/5 blur-2xl group-focus-within:bg-[#2ACED1]/10 transition-all rounded-[2.5rem]" />
+        <div className="relative">
+          <Search className="absolute left-8 top-1/2 -translate-y-1/2 w-5 h-5 text-[#2ACED1]" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search customers..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/80 dark:bg-[#011B3B]/80 border border-[#2ACED1]/20 focus:border-[#2ACED1] outline-none text-sm transition-colors placeholder:text-[#000C22]/30 dark:placeholder:text-white/30"
+            placeholder="Search by name, email, or unique identity..."
+            className="w-full pl-20 pr-10 py-6 rounded-[2.5rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 focus:border-[#2ACED1]/50 outline-none text-sm font-medium transition-all placeholder:text-[#000C22]/20 dark:placeholder:text-white/10 shadow-sm"
           />
         </div>
-      </ScrollReveal>
+      </div>
 
       {/* Customer Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filtered.map((customer, i) => (
-          <ScrollReveal key={customer.id} direction={["left", "bottom", "right"][i % 3] as "left" | "bottom" | "right"} delay={i * 0.08}>
-            <motion.div
-              whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(42,206,209,0.15)" }}
-              className="p-6 rounded-2xl bg-white/80 dark:bg-[#011B3B]/80 backdrop-blur-sm border border-[#2ACED1]/20 hover:border-[#2ACED1]/60 transition-all duration-300 cursor-pointer group"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#2ACED1] to-[#034E78] flex items-center justify-center text-white font-bold text-lg">
-                    {customer.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-[#000C22] dark:text-white group-hover:text-[#2ACED1] transition-colors">{customer.name}</h3>
-                    <p className="text-xs text-[#000C22]/50 dark:text-[#D8F4F7]/50 flex items-center gap-1">
-                      <Mail className="w-3 h-3" /> {customer.email}
-                    </p>
-                  </div>
-                </div>
-                <button className="p-1.5 rounded-lg hover:bg-[#2ACED1]/10 transition-colors opacity-0 group-hover:opacity-100">
-                  <MoreHorizontal className="w-4 h-4 text-[#000C22]/50 dark:text-[#D8F4F7]/50" />
-                </button>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {filtered.map((customer) => (
+          <div
+            key={customer.id}
+            className="p-10 rounded-[3rem] bg-white dark:bg-[#011B3B] border border-black/5 dark:border-white/5 shadow-sm hover:shadow-2xl hover:shadow-[#2ACED1]/5 transition-all duration-500 cursor-pointer group relative overflow-hidden"
+          >
+            {/* Status Indicator Bar */}
+            <div className={`absolute top-0 left-0 right-0 h-1 ${
+              customer.status === "Active" ? "bg-emerald-500" : 
+              customer.status === "VIP" ? "bg-purple-500" : "bg-amber-500"
+            }`} />
 
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 rounded-xl bg-[#F2FCFC] dark:bg-[#000C22]/60">
-                  <p className="text-xs text-[#000C22]/50 dark:text-[#D8F4F7]/50 mb-0.5">Payments</p>
-                  <p className="text-lg font-bold text-[#000C22] dark:text-white">{customer.payments}</p>
+            <div className="flex items-start justify-between mb-10">
+              <div className="flex items-center gap-5">
+                <div className="w-16 h-16 rounded-[1.5rem] bg-gradient-to-br from-[#2ACED1] to-[#034E78] flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-[#2ACED1]/10">
+                  {customer.name.charAt(0)}
                 </div>
-                <div className="p-3 rounded-xl bg-[#F2FCFC] dark:bg-[#000C22]/60">
-                  <p className="text-xs text-[#000C22]/50 dark:text-[#D8F4F7]/50 mb-0.5">Volume</p>
-                  <p className="text-lg font-bold text-[#000C22] dark:text-white">${((customer.volume ?? 0)).toLocaleString()}</p>
+                <div>
+                  <h3 className="font-bold text-[#000C22] dark:text-white text-lg tracking-tight group-hover:text-[#2ACED1] transition-colors">{customer.name}</h3>
+                  <p className="text-[10px] font-bold text-[#000C22]/30 dark:text-white/20 flex items-center gap-2 mt-1.5 uppercase tracking-widest">
+                    <Mail className="w-3.5 h-3.5 text-[#2ACED1]" /> {customer.email}
+                  </p>
                 </div>
               </div>
+              <button className="p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                <MoreHorizontal className="w-5 h-5 text-[#000C22]/20 dark:text-white/20" />
+              </button>
+            </div>
 
-              <div className="flex items-center justify-between">
-                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${statusColors[customer.status as string] ?? ""}`}>{customer.status}</span>
-                <span className="text-xs text-[#000C22]/40 dark:text-[#D8F4F7]/40">Since {customer.joined}</span>
+            <div className="grid grid-cols-2 gap-6 mb-10">
+              <div className="p-6 rounded-[2rem] bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#000C22]/20 dark:text-white/20 mb-2">Transactions</p>
+                <p className="text-2xl font-bold text-[#000C22] dark:text-white tracking-tight">{customer.payments}</p>
               </div>
-            </motion.div>
-          </ScrollReveal>
+              <div className="p-6 rounded-[2rem] bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5">
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#000C22]/20 dark:text-white/20 mb-2">Lifetime Vol</p>
+                <p className="text-2xl font-bold text-[#2ACED1] tracking-tighter">${((customer.volume ?? 0)).toLocaleString()}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-6 border-t border-black/5 dark:divide-white/5">
+              <div className="flex items-center gap-2.5">
+                 <div className={`w-2 h-2 rounded-full ${
+                   customer.status === "Active" ? "bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" : 
+                   customer.status === "VIP" ? "bg-purple-500" : "bg-amber-500"
+                 }`} />
+                 <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${
+                   customer.status === "Active" ? "text-emerald-500" : 
+                   customer.status === "VIP" ? "text-purple-500" : "text-amber-500"
+                 }`}>{customer.status}</span>
+              </div>
+              <span className="text-[9px] font-bold text-[#000C22]/20 dark:text-white/10 uppercase tracking-[0.2em]">Member since {customer.joined}</span>
+            </div>
+
+            <div className="absolute bottom-6 right-8 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+               <ArrowUpRight className="w-6 h-6 text-[#2ACED1]" />
+            </div>
+          </div>
         ))}
       </div>
     </div>

@@ -70,6 +70,8 @@ const mockPayouts: Payout[] = [
 
 const mockDashboardStats: DashboardStats = {
   revenue: 142580,
+  availableBalance: 42850,
+  pendingBalance: 12400,
   transactions: 3847,
   customers: 1293,
   processingTime: 1.2,
