@@ -7,7 +7,7 @@ import { BrandLogo } from "@/components/atoms/BrandLogo";
 
 export function Footer() {
   return (
-    <footer className="bg-[#000C22] py-16 px-6 relative z-20 text-white border-t border-white/5">
+    <footer className="bg-[#008E96] py-16 px-6 relative z-20 text-white border-t border-white/5">
         <div className="max-w-[1280px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <ScrollReveal direction="left" delay={0.1}>

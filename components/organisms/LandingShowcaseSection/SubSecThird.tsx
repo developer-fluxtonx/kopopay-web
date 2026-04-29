@@ -2,10 +2,7 @@ import React from "react";
 
 const SubSecThird: React.FC = () => {
   return (
-    <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#050D1F] px-6 py-8 shadow-[0_24px_100px_rgba(0,0,0,0.32)] md:px-10 md:py-12">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,160,122,0.18),_transparent_28%),radial-gradient(circle_at_right,_rgba(170,92,255,0.2),_transparent_32%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px] opacity-30" />
-
+    <section className="relative w-full pt-16 md:pt-24">
       <div className="relative z-10">
         <div className="max-w-3xl">
           <h2 className="text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-[4rem] lg:leading-[0.95]">
